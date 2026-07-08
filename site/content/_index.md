@@ -153,7 +153,9 @@ Debian's fix status does not carry over. Proxmox released fixed kernels
 for both supported series on 2026-07-08: `proxmox-kernel-6.8.12-33-pve`
 (PVE 8 default series) and `proxmox-kernel-7.0.14-4-pve` (the PVE 9
 default as of `proxmox-default-kernel` 2.1.0), both now in the
-`pve-no-subscription` repository. A fix for PVE 9 systems still running
+`pve-no-subscription` repository. Proxmox publishes kernel updates to
+`pve-no-subscription` first; the enterprise repository receives the same
+kernels later. A fix for PVE 9 systems still running
 the 6.17 kernel series was expected to follow shortly; those systems
 remain vulnerable until the 6.17 update ships. Proxmox VE is x86-only,
 so it does not appear in the [ITScape][itscape] (arm64) tracker.

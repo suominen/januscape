@@ -428,8 +428,26 @@ url=http://download.proxmox.com/debian/pve/dists/<trixie|bookworm>/pve-no-subscr
 curl -fsSL "$url" | zcat | grep -A3 '^Package: proxmox-default-kernel'
 ```
 
+The default kernel *series* is whatever the highest-versioned
+`proxmox-default-kernel` meta-package depends on — check it each time, it
+moves (2.1.0 flipped the VE 9 default from 6.14 to 7.0).
+
 Whether a Proxmox kernel carries the fix tracks its Ubuntu series, not
-Debian's.  Proxmox VE is **x86-only** — it does not appear in the ITScape
+Debian's.  To confirm a cherry-pick, read the packaging changelog in
+Proxmox's kernel git — `https://git.proxmox.com/git/pve-kernel.git`,
+branch `master` for the current PVE 9 series, `bookworm-6.8` for PVE 8.
+Proxmox lists every security cherry-pick there by name/CVE.  The cgit HTML
+may be gated, but git smart-HTTP works headless: shallow-clone with
+`--depth 1` (the kernel itself is an unfetched submodule, so the clone is
+small) and read `debian/changelog` plus `patches/`.
+
+The enterprise repository (`enterprise.proxmox.com`) is HTTP-auth-gated
+(401 without subscription credentials), so it cannot be polled headlessly.
+Track `pve-no-subscription` only: packages flow pvetest →
+pve-no-subscription → pve-enterprise, so no-subscription is strictly the
+leading indicator and enterprise receives the same kernels later.
+
+Proxmox VE is **x86-only** — it does not appear in the ITScape
 (arm64) tracker.
 
 ## Rocky / Amazon kernel version source (RPM repodata)
