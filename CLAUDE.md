@@ -219,6 +219,9 @@ alone and don't commit at all — don't bump `lastmod`, don't bump
 - Go (any recent version) — needed for Hugo Modules to pull PaperMod.
 - The Nix flake provides both: `nix develop` (or just `cd` in if direnv is
   set up).
+- On this host `nix` is **not** available (Debian, no nixpkgs installed) —
+  don't try `nix develop`.  Hugo ≥ 0.146 is at `/usr/local/bin/hugo`, so
+  plain `make build` / `make dist` work directly.
 
 ## Auto-update worktree
 
@@ -341,10 +344,12 @@ SHA, so search by the upstream reference / subject, not `git tag
 --contains`:
 
 ```
-git -C ~/src/linux/stable log origin/linux-<series>.y --grep=81ccda30b4e8 --grep='unexpected role' --format='%h %s'
+git -C ~/src/linux/stable log v<series>..origin/linux-<series>.y --grep=81ccda30b4e8 --grep='unexpected role' --format='%h %s'
 ```
 
-Empty output ⇒ the series is still unpatched.  Confirm the fix landed
+Empty output ⇒ the series is still unpatched.  Keep the range bounded to
+`v<series>..` — an unbounded subject grep over the whole branch history
+can match an ancient unrelated commit and read as a false "fixed".  Confirm the fix landed
 mainline in v7.2-rc1 with:
 
 ```
