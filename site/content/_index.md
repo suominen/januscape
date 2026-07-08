@@ -122,15 +122,15 @@ disclosures, appear only in prose where relevant.
 | Debian | 13 (trixie) | 6.12.86-1 | — | :x: Vulnerable — below 6.12.95 |
 | Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — below 6.1.177 |
 | Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
-| Proxmox VE | 9 | 6.14.11-9-pve | — | :grey_question: Unverified — Ubuntu-derived 6.14; backport status pending |
-| Proxmox VE | 8 | 6.8.12-32-pve | — | :grey_question: Unverified — Ubuntu-derived 6.8; backport status pending |
+| Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed — ships 7.0.14-4-pve (carries the backport) |
+| Proxmox VE | 8 | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed — ships 6.8.12-33-pve (carries the backport) |
 | NixOS | Unstable | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed — ships 6.18.38 (carries the backport) |
 | NixOS | 26.05 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed — ships 6.18.38 (carries the backport) |
 | Rocky Linux | 10 | 6.12.0-211.26.1.el10_2 | — | :x: Vulnerable — no EL10 fix shipped yet |
 | Rocky Linux | 9 | 5.14.0-687.17.1.el9_8 | — | :x: Vulnerable — el9 5.14 carries the bug, no fix yet |
 | Rocky Linux | 8 | 4.18.0-553.el8_10 | — | :x: Vulnerable — el8 4.18 carries the bug, no fix yet |
-| Amazon Linux | 2023 | 6.1.x (amzn2023) | — | :grey_question: Unverified — check ALAS for the amzn2023 backport |
-| Amazon Linux | 2 | 4.14.x (amzn2) | — | :grey_question: Unverified — check ALAS for the amzn2 backport |
+| Amazon Linux | 2023 | 6.1.x (amzn2023) | — | :x: Vulnerable — ALAS tracks the CVE but no advisory or kernel fix has shipped |
+| Amazon Linux | 2 | 4.14.x (amzn2) | — | :x: Vulnerable — ALAS tracks the CVE but no advisory or kernel fix has shipped |
 {.distros}
 
 ### Debian
@@ -148,12 +148,15 @@ is unaffected by that.
 
 ### Proxmox VE
 
-Proxmox ships its own Ubuntu-derived kernels (`proxmox-kernel-*`), so
-Debian's fix status does not carry over. PVE 9 (6.14) and PVE 8 (6.8) are
-both in-window; whether Ubuntu has backported `81ccda30b4e8` to those
-series is pending verification against the Ubuntu/Proxmox changelog.
-Proxmox VE is x86-only, so it does not appear in the [ITScape][itscape]
-(arm64) tracker.
+Proxmox ships its own Proxmox-built kernels (`proxmox-kernel-*`), so
+Debian's fix status does not carry over. Proxmox released fixed kernels
+for both supported series on 2026-07-08: `proxmox-kernel-6.8.12-33-pve`
+(PVE 8 default series) and `proxmox-kernel-7.0.14-4-pve` (the PVE 9
+default as of `proxmox-default-kernel` 2.1.0), both now in the
+`pve-no-subscription` repository. A fix for PVE 9 systems still running
+the 6.17 kernel series was expected to follow shortly; those systems
+remain vulnerable until the 6.17 update ships. Proxmox VE is x86-only,
+so it does not appear in the [ITScape][itscape] (arm64) tracker.
 
 ### Rocky Linux / RHEL family
 
@@ -169,10 +172,11 @@ to be in the same state until then.
 
 ### Amazon Linux
 
-AL2023 (default 6.1 stream) and AL2 (4.14) both carry the bug. Amazon has
-opened ALAS entries for CVE-2026-53359; confirm from `alas.aws.amazon.com`
-whether the shipped `kernel` build carries the backport before relying on
-either as fixed.
+AL2023 (default 6.1 stream) and AL2 (4.14) both carry the bug. Amazon's
+ALAS explorer recognises CVE-2026-53359 as an important-severity kernel
+issue, but as of 2026-07-08 no ALAS advisory has been issued for either
+distribution — the Advisory column is empty for all affected `kernel`
+packages. Both remain vulnerable until Amazon ships a patched kernel.
 
 ## Detection
 
@@ -302,20 +306,26 @@ until patched.
   (< 6.12.95), oldstable `6.1.170-3` (< 6.1.177), and oldoldstable
   `5.10.223-1` (5.10.y unpatched) all remain vulnerable. Debian's own
   security-tracker had no CVE-2026-53359 entry yet at seed.
-- **Proxmox VE**: PVE 9 (`proxmox-kernel-6.14`) and PVE 8
-  (`proxmox-kernel-6.8`) are in-window; Ubuntu/Proxmox backport status not
-  yet verified — seeded `:grey_question:`.
+- **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
+  in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
+  default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
+  `proxmox-kernel-7.0.14-4-pve` (the default since `proxmox-default-kernel`
+  2.1.0) both carry the backport → `:white_check_mark:`. PVE 9 systems
+  still running the 6.17 kernel series awaiting a separate fix (forum:
+  "6.17 will follow shortly").
 - **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
   → fixed.
 - **Rocky / RHEL family**: no AlmaLinux/Rocky/RHEL errata for
-  CVE-2026-53359 at seed (AlmaLinux errata API returned none). Rocky 10
-  (`6.12.0-211.26.1.el10_2`), Rocky 9 (`5.14.0-687.17.1.el9_8`), and
-  Rocky 8 (`4.18.0-553.el8_10`) all carry the bug → `:x:`.
-- **Amazon Linux**: ALAS entries exist for CVE-2026-53359; the shipped
-  `kernel` backport state was not confirmed at seed — seeded
-  `:grey_question:`.
+  CVE-2026-53359 (AlmaLinux errata API for versions 8, 9, and 10 returned
+  none). Rocky 10 (`6.12.0-211.26.1.el10_2`), Rocky 9
+  (`5.14.0-687.17.1.el9_8`), and Rocky 8 (`4.18.0-553.el8_10`) all carry
+  the bug → `:x:`.
+- **Amazon Linux**: ALAS explorer recognises CVE-2026-53359 as an
+  important-severity kernel issue but no ALAS advisory has been issued for
+  AL2023 or AL2 — Advisory column empty for all affected `kernel` packages
+  → `:x:`.
 
 ## References
 
