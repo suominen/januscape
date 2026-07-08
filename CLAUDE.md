@@ -236,6 +236,23 @@ One-time setup (from the primary checkout at `~/src/januscape`):
 git worktree add -b auto-update ~/src/auto-update/januscape main
 ```
 
+The wrapper runs `git fetch origin` and `git merge origin/main` under
+`set -e`, so the repo needs a GitHub `origin` with `main` pushed or every
+scheduled run aborts before doing anything.  A freshly `git init`'d tracker
+must `git remote add origin https://github.com/suominen/januscape.git` and
+`git push -u origin main` before the timer is worth enabling.
+
+To run a refresh immediately (same path the timer takes):
+
+```
+systemctl --user start januscape-tracker-update.service
+```
+
+It is a `oneshot`, so the command blocks until the run finishes; follow its
+output with `journalctl --user -u januscape-tracker-update`.  Run the
+trackers **one at a time**, never in parallel — they share the
+`~/src/linux/*` reference clones.
+
 The systemd units ship in `systemd/`.  They are not in a standard unit
 search path, so wiring the timer means symlinking both units into
 `~/.config/systemd/user/` and then enabling the timer.  Use `ln -sr` so the
@@ -251,7 +268,9 @@ systemctl --user enable --now januscape-tracker-update.timer
 
 The timer fires at `05,17:50` — staggered from the sibling trackers
 (ipv6_frag_escape `:05`, cifswitch `:20`, pintheft `:35`, itscape `06,18:05`) so the shared
-kernel clones are not fetched simultaneously.
+kernel clones are not fetched simultaneously.  Verify the live set with
+`systemctl --user list-timers | grep tracker` — this in-doc list has gone
+stale before.
 
 ## Tearing down the auto-update
 
