@@ -119,7 +119,7 @@ disclosures, appear only in prose where relevant.
 |---|---|---|---|---|
 | Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed — ships 7.1.3 (carries the backport) |
 | Debian | forky (testing) | 7.0.13-1 | — | :x: Vulnerable — 7.0.y EOL, no backport |
-| Debian | 13 (trixie) | 6.12.86-1 | — | :x: Vulnerable — below 6.12.95 |
+| Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — ships 6.12.95-1 via trixie-security (carries the backport) |
 | Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — below 6.1.177 |
 | Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
 | Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed — ships 7.0.14-4-pve (carries the backport) |
@@ -141,14 +141,15 @@ disclosures, appear only in prose where relevant.
 
 Debian's `linux` is affected in every suite (the bug predates all of
 them). **sid** shipped `linux 7.1.3-1`, which tracks upstream 7.1.3 and
-carries the backport — sid is fixed. **forky** (testing, 7.0.13-1) rides
-the end-of-life 7.0.y line, which never received the backport, and
-**trixie** (6.12.86-1), **bookworm** (6.1.170-3), and **bullseye**
-(5.10.223-1) are all below their branch's first-fixed release (6.12.95 /
-6.1.177 / — ), so they remain vulnerable until Debian ships the fix.
-Debian keeps `/dev/kvm` owned `root:kvm` mode `0660`, so the unprivileged
-*local* vector needs `kvm`-group membership there; the guest-escape vector
-is unaffected by that.
+carries the backport — sid is fixed. **trixie** shipped `linux 6.12.95-1`
+via `trixie-security` (2026-07-05), tracking upstream 6.12.95 which carries
+the backport — trixie is fixed. **forky** (testing, 7.0.13-1) rides the
+end-of-life 7.0.y line, which never received the backport; **bookworm**
+(6.1.170-3) and **bullseye** (5.10.223-1) are both below their branch's
+first-fixed release (6.1.177 / 5.10.y has no upstream backport yet), so
+they remain vulnerable until Debian ships the fix. Debian keeps `/dev/kvm`
+owned `root:kvm` mode `0660`, so the unprivileged *local* vector needs
+`kvm`-group membership there; the guest-escape vector is unaffected by that.
 
 ### Proxmox VE
 
@@ -169,12 +170,12 @@ so it does not appear in the [ITScape][itscape] (arm64) tracker.
 The EL family ships `/dev/kvm` **world-accessible** by default (EL8 and
 later), so on those hosts *any* local user — not just a guest — can reach
 the bug; combined with the guest-escape path this is the higher-exposure
-case. AlmaLinux is the leading indicator for the EL10 fixed kernel version;
-as of this writing **no** EL errata (AlmaLinux, Rocky, or RHEL) has shipped
-a Januscape fix. Rocky 10 (6.12 el10), Rocky 9 (5.14 el9), and Rocky 8
-(4.18 el8) all carry the bug and remain vulnerable until their kernel
-updates land. RHEL 10, Oracle Linux 10, and CloudLinux OS 10 are expected
-to be in the same state until then.
+case. Red Hat shipped RHSA-2026:36957 (RHEL 9, fixed kernel
+`5.14.0-687.24.1.el9_8`) and RHSA-2026:36956 (RHEL 10, fixed kernel
+`6.12.0-211.32.1.el10_2`); Rocky 9 and Rocky 10 have not yet rebuilt
+those NVRs and remain vulnerable. RHEL 8 (4.18 el8) is still Affected
+with no advisory — Rocky 8 remains vulnerable until then. Oracle Linux 10
+and CloudLinux OS 10 are expected to track the RHEL fixes.
 
 ### Amazon Linux
 
@@ -307,11 +308,13 @@ until patched.
 
 ### Distributions
 
-- **Debian** (via the dak `madison` API): unstable `7.1.3-1` carries the
-  backport → fixed; testing `7.0.13-1` (EOL 7.0.y), stable `6.12.86-1`
-  (< 6.12.95), oldstable `6.1.170-3` (< 6.1.177), and oldoldstable
-  `5.10.223-1` (5.10.y unpatched) all remain vulnerable. Debian's own
-  security-tracker had no CVE-2026-53359 entry yet at seed.
+- **Debian** (via Debian security tracker + dak `madison` API): unstable
+  `7.1.3-1` and stable (trixie) `6.12.95-1` (via `trixie-security`,
+  first seen 2026-07-05) both carry the backport → fixed. Testing (forky)
+  `7.0.13-1` (EOL 7.0.y), oldstable (bookworm) `6.1.170-3` (a
+  `6.1.176-1` bookworm-security upload exists but is still < 6.1.177 —
+  verdict unchanged, version not recorded), and oldoldstable (bullseye)
+  `5.10.223-1` (5.10.y unpatched upstream) all remain vulnerable.
 - **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
   in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
   default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
@@ -323,15 +326,18 @@ until patched.
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
   → fixed.
-- **Rocky / RHEL family**: no AlmaLinux/Rocky/RHEL errata for
-  CVE-2026-53359 (AlmaLinux errata API for versions 8, 9, and 10 returned
-  none). Rocky 10 (`6.12.0-211.26.1.el10_2`), Rocky 9
-  (`5.14.0-687.17.1.el9_8`), and Rocky 8 (`4.18.0-553.el8_10`) all carry
-  the bug → `:x:`.
-- **Amazon Linux**: ALAS explorer recognises CVE-2026-53359 as an
-  important-severity kernel issue but no ALAS advisory has been issued for
-  AL2023 or AL2 — Advisory column empty for all affected `kernel` packages
-  → `:x:`.
+- **Rocky / RHEL family**: RHSA-2026:36957 (RHEL 9, fixed NVR
+  `5.14.0-687.24.1.el9_8`) and RHSA-2026:36956 (RHEL 10, fixed NVR
+  `6.12.0-211.32.1.el10_2`) published (via Red Hat security API). Rocky 9
+  BaseOS still at `5.14.0-687.17.1.el9_8` (rebuild pending), Rocky 10
+  BaseOS still at `6.12.0-211.28.1.el10_2` (rebuild pending) — both
+  below their RHSA target NVR → `:x:`. RHEL 8 still Affected with no
+  RHSA; Rocky 8 (`4.18.0-553.el8_10`) → `:x:`.
+- **Amazon Linux** (via repodata `updateinfo.xml.gz`): no ALAS advisory
+  for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
+  AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
+  kernel6.12 and kernel6.18 extras repos returned 403 headlessly; their
+  verdicts unchanged from prior run (`:x:`).
 
 ## References
 
