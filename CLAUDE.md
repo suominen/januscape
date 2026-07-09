@@ -478,18 +478,40 @@ accumulate every point release's kernel, so pick the numerically-highest
 
 ## Debian kernel version source
 
-Use the dak-backed madison API for the source-package version per suite
-(unstable=sid, testing=forky, stable=trixie, oldstable=bookworm,
-oldoldstable=bullseye):
+**The security tracker, not a madison base-version compare, is
+authoritative for Debian status.** Two traps make a naive version check
+wrong: the base suite lags the `-security` upload that ships the fix, and
+Debian often backports the fix to a version *below* the upstream
+first-fixed release — so comparing a base-suite version against the
+upstream first-fixed release can read an already-fixed suite as vulnerable.
+
+Read status and fixed version straight from the security tracker. WebFetch
+the human-readable per-CVE page, or `curl` the JSON and read the
+`CVE-2026-53359` block for each release's `status` (resolved/open) and the
+version under `repositories` (a `<suite>-security` entry means the fix
+shipped as a security update):
+
+```
+curl -fsSL 'https://security-tracker.debian.org/tracker/data/json'
+```
+
+Use the dak madison API only for the base-suite version and the
+sid/testing lineage (unstable=sid, testing=forky, stable=trixie,
+oldstable=bookworm, oldoldstable=bullseye):
 
 ```
 curl -fsSL 'https://api.ftp-master.debian.org/madison?package=linux&s=sid,forky,trixie,bookworm,bullseye&text=on'
 ```
 
-Cross-check the Debian security tracker for CVE-2026-53359 once it has an
-entry.  Every in-window Debian kernel below its branch's first-fixed
-release is vulnerable; `/dev/kvm` is `root:kvm 0660` on Debian, limiting the
-local vector to the `kvm` group.
+For a *Fixed since* date, use the `first_seen` of the fixed version in
+snapshot.debian.org:
+
+```
+curl -fsSL 'https://snapshot.debian.org/mr/package/linux/<version>/srcfiles?fileinfo=1'
+```
+
+`/dev/kvm` is `root:kvm 0660` on Debian, limiting the local vector to the
+`kvm` group.
 
 ## Key sources to monitor
 
