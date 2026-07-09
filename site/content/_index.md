@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-08
+lastmod: 2026-07-09
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -129,8 +129,12 @@ disclosures, appear only in prose where relevant.
 | Rocky Linux | 10 | 6.12.0-211.26.1.el10_2 | — | :x: Vulnerable — no EL10 fix shipped yet |
 | Rocky Linux | 9 | 5.14.0-687.17.1.el9_8 | — | :x: Vulnerable — el9 5.14 carries the bug, no fix yet |
 | Rocky Linux | 8 | 4.18.0-553.el8_10 | — | :x: Vulnerable — el8 4.18 carries the bug, no fix yet |
-| Amazon Linux | 2023 | 6.1.x (amzn2023) | — | :x: Vulnerable — ALAS tracks the CVE but no advisory or kernel fix has shipped |
-| Amazon Linux | 2 | 4.14.x (amzn2) | — | :x: Vulnerable — ALAS tracks the CVE but no advisory or kernel fix has shipped |
+| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.176 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2023 (kernel6.18) | 6.18.36-69.136 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | :x: Vulnerable — in-window, no ALAS |
 {.distros}
 
 ### Debian
@@ -283,7 +287,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-08.*
+*Last verified 2026-07-09.*
 
 ### Upstream
 
