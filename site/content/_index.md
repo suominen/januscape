@@ -132,9 +132,9 @@ disclosures, appear only in prose where relevant.
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.176 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.36-69.136 | — | :x: Vulnerable — in-window, no ALAS |
-| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — in-window, no ALAS |
-| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | :x: Vulnerable — in-window, no ALAS |
-| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
+| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
+| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
 {.distros}
 
 ### Debian
@@ -183,7 +183,12 @@ AL2023 (default 6.1 stream) and AL2 (4.14) both carry the bug. Amazon's
 ALAS explorer recognises CVE-2026-53359 as an important-severity kernel
 issue, but as of 2026-07-08 no ALAS advisory has been issued for either
 distribution — the Advisory column is empty for all affected `kernel`
-packages. Both remain vulnerable until Amazon ships a patched kernel.
+packages. AL2023 remains vulnerable until Amazon ships a patched kernel.
+**AL2**, however, reached end of support on **2026-06-30**: AWS no longer
+provides security updates or bug fixes for AL2 core packages, so its
+three streams (4.14, plus 5.10 / 5.15 via `amazon-linux-extras`) are not
+expected to ever receive a fix — the exit for an AL2 KVM host is
+migrating to AL2023 or another patched distribution.
 
 ## Detection
 
@@ -337,7 +342,10 @@ until patched.
   for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
   AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
   kernel6.12 and kernel6.18 extras repos returned 403 headlessly; their
-  verdicts unchanged from prior run (`:x:`).
+  verdicts unchanged from prior run (`:x:`). **AL2 reached end of support
+  on 2026-06-30** (per the AWS AL2 FAQ; confirmed against endoflife.date)
+  without an ALAS for this CVE — its three rows are marked "no fix
+  expected" and will not flip.
 
 ## References
 
