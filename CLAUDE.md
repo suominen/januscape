@@ -489,11 +489,16 @@ accumulate every point release's kernel, so pick the numerically-highest
   Januscape (the bug predates them all), and EL8+ ships `/dev/kvm`
   world-accessible.  A row flips only when the BaseOS kernel NVR reaches the
   RHEL fixed build from the Red Hat record above.
-- **Amazon Linux** core: AL2023 default `kernel` (6.1 stream) and AL2
-  `kernel` (4.14) are both in-window.  Resolve
-  `…/al2023/core/mirrors/latest/x86_64/mirror.list` (AL2023) or
-  `…/2/core/latest/x86_64/mirror.list` (AL2), then read repodata from the
-  returned base URL; cross-check `alas.aws.amazon.com`.
+- **Amazon Linux**: the machine-readable ALAS signal is the repodata
+  **`updateinfo.xml.gz`** (maps CVE → ALAS → fixed kernel NVR); the per-CVE
+  ALAS HTML pages are JS-rendered and return nothing headlessly, so reading
+  them falsely sees "no advisory".  Resolve the mirror, fetch
+  `<base>repodata/updateinfo.xml.gz` (plain filename) and grep the CVE for
+  the ALAS id + fixed `kernel*` version; check **all** streams (AL2023
+  `kernel` 6.1, opt-in `kernel6.12`, `kernel6.18`), and read current versions
+  from `primary.xml.gz`.  AL2023 (6.1) and AL2 (4.14) are both in-window for
+  Januscape.  Mirror: `…/al2023/core/mirrors/latest/x86_64/mirror.list`
+  (AL2023) or `…/2/core/latest/x86_64/mirror.list` (AL2).
 
 ## Debian kernel version source
 
