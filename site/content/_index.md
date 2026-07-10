@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-09
+lastmod: 2026-07-10
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -293,7 +293,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-09.*
+*Last verified 2026-07-10.*
 
 ### Upstream
 
@@ -333,11 +333,14 @@ until patched.
   → fixed.
 - **Rocky / RHEL family**: RHSA-2026:36957 (RHEL 9, fixed NVR
   `5.14.0-687.24.1.el9_8`) and RHSA-2026:36956 (RHEL 10, fixed NVR
-  `6.12.0-211.32.1.el10_2`) published (via Red Hat security API). Rocky 9
-  BaseOS still at `5.14.0-687.17.1.el9_8` (rebuild pending), Rocky 10
-  BaseOS still at `6.12.0-211.28.1.el10_2` (rebuild pending) — both
-  below their RHSA target NVR → `:x:`. RHEL 8 still Affected with no
-  RHSA; Rocky 8 (`4.18.0-553.el8_10`) → `:x:`.
+  `6.12.0-211.32.1.el10_2`) published (via Red Hat security API).
+  AlmaLinux rebuilt both on 2026-07-10 (via errata.almalinux.org):
+  ALSA-2026:36957 (AL9, `5.14.0-687.24.1.el9_8`) and ALSA-2026:36956
+  (AL10, `6.12.0-211.32.1.el10_2`). Rocky 9 BaseOS still at
+  `5.14.0-687.17.1.el9_8` (rebuild pending), Rocky 10 BaseOS still at
+  `6.12.0-211.28.1.el10_2` (rebuild pending) — both below their RHSA
+  target NVR → `:x:`. RHEL 8 still Affected with no RHSA; Rocky 8 →
+  `:x:`.
 - **Amazon Linux** (via repodata `updateinfo.xml.gz`): no ALAS advisory
   for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
   AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
