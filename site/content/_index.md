@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-10
+lastmod: 2026-07-11
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -158,12 +158,13 @@ Debian's fix status does not carry over. Proxmox released fixed kernels
 for both supported series on 2026-07-08: `proxmox-kernel-6.8.12-33-pve`
 (PVE 8 default series) and `proxmox-kernel-7.0.14-4-pve` (the PVE 9
 default as of `proxmox-default-kernel` 2.1.0), both now in the
-`pve-no-subscription` repository. Proxmox publishes kernel updates to
-`pve-no-subscription` first; the enterprise repository receives the same
-kernels later. A fix for PVE 9 systems still running
-the 6.17 kernel series was expected to follow shortly; those systems
-remain vulnerable until the 6.17 update ships. Proxmox VE is x86-only,
-so it does not appear in the [ITScape][itscape] (arm64) tracker.
+`pve-no-subscription` repository. The 6.17 series fix
+(`proxmox-kernel-6.17.13-15-pve`) subsequently shipped to
+`pve-no-subscription` as well (advisory PSA-2026-00027-1); PVE 9 systems
+running the 6.17 kernel are now covered. Proxmox publishes kernel updates
+to `pve-no-subscription` first; the enterprise repository receives the
+same kernels later. Proxmox VE is x86-only, so it does not appear in the
+[ITScape][itscape] (arm64) tracker.
 
 ### Rocky Linux / RHEL family
 
@@ -293,7 +294,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-10.*
+*Last verified 2026-07-11.*
 
 ### Upstream
 
@@ -324,9 +325,9 @@ until patched.
   in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
   default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
   `proxmox-kernel-7.0.14-4-pve` (the default since `proxmox-default-kernel`
-  2.1.0) both carry the backport → `:white_check_mark:`. PVE 9 systems
-  still running the 6.17 kernel series awaiting a separate fix (forum:
-  "6.17 will follow shortly").
+  2.1.0) both carry the backport → `:white_check_mark:`. The 6.17 series fix
+  `proxmox-kernel-6.17.13-15-pve` subsequently landed in
+  `pve-no-subscription` (advisory PSA-2026-00027-1); confirmed in Packages.gz.
 - **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
