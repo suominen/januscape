@@ -118,7 +118,7 @@ disclosures, appear only in prose where relevant.
 | Distribution | Release | Kernel | Fixed since | Status |
 |---|---|---|---|---|
 | Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed — ships 7.1.3 (carries the backport) |
-| Debian | forky (testing) | 7.0.13-1 | — | :x: Vulnerable — 7.0.y EOL, no backport |
+| Debian | forky (testing) | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed — ships 7.1.3-1 (carries the backport) |
 | Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — ships 6.12.95-1 via trixie-security (carries the backport) |
 | Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — below 6.1.177 |
 | Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
@@ -141,15 +141,16 @@ disclosures, appear only in prose where relevant.
 
 Debian's `linux` is affected in every suite (the bug predates all of
 them). **sid** shipped `linux 7.1.3-1`, which tracks upstream 7.1.3 and
-carries the backport — sid is fixed. **trixie** shipped `linux 6.12.95-1`
-via `trixie-security` (2026-07-05), tracking upstream 6.12.95 which carries
-the backport — trixie is fixed. **forky** (testing, 7.0.13-1) rides the
-end-of-life 7.0.y line, which never received the backport; **bookworm**
-(6.1.170-3) and **bullseye** (5.10.223-1) are both below their branch's
-first-fixed release (6.1.177 / 5.10.y has no upstream backport yet), so
-they remain vulnerable until Debian ships the fix. Debian keeps `/dev/kvm`
-owned `root:kvm` mode `0660`, so the unprivileged *local* vector needs
-`kvm`-group membership there; the guest-escape vector is unaffected by that.
+carries the backport — sid is fixed. **forky** (testing) migrated from
+7.0.y to `linux 7.1.3-1`, which carries the backport — forky is fixed.
+**trixie** shipped `linux 6.12.95-1` via `trixie-security` (2026-07-05),
+tracking upstream 6.12.95 which carries the backport — trixie is fixed.
+**bookworm** (6.1.170-3) and **bullseye** (5.10.223-1) are both below
+their branch's first-fixed release (6.1.177 / 5.10.y has no upstream
+backport yet), so they remain vulnerable until Debian ships the fix.
+Debian keeps `/dev/kvm` owned `root:kvm` mode `0660`, so the
+unprivileged *local* vector needs `kvm`-group membership there; the
+guest-escape vector is unaffected by that.
 
 ### Proxmox VE
 
@@ -314,13 +315,14 @@ until patched.
 
 ### Distributions
 
-- **Debian** (via Debian security tracker + dak `madison` API): unstable
-  `7.1.3-1` and stable (trixie) `6.12.95-1` (via `trixie-security`,
-  first seen 2026-07-05) both carry the backport → fixed. Testing (forky)
-  `7.0.13-1` (EOL 7.0.y), oldstable (bookworm) `6.1.170-3` (a
-  `6.1.176-1` bookworm-security upload exists but is still < 6.1.177 —
-  verdict unchanged, version not recorded), and oldoldstable (bullseye)
-  `5.10.223-1` (5.10.y unpatched upstream) all remain vulnerable.
+- **Debian** (via dak `madison` API + snapshot.debian.org): unstable
+  `7.1.3-1`, testing (forky) `7.1.3-1` (first seen in snapshot
+  2026-07-04), and stable (trixie) `6.12.95-1` (via `trixie-security`,
+  first seen 2026-07-05) all carry the backport → fixed. Oldstable
+  (bookworm) `6.1.170-3` (a `6.1.176-1` bookworm-security upload exists
+  but is still < 6.1.177 — verdict unchanged, version not recorded), and
+  oldoldstable (bullseye) `5.10.223-1` (5.10.y unpatched upstream) remain
+  vulnerable.
 - **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
   in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
   default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
