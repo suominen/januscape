@@ -25,7 +25,7 @@ cover:
 | Discoverer | Hyunwoo Kim ([`@v4bel`][poc]) |
 | Public disclosure | 2026-07-06 |
 | Public PoC | [V4bel/Januscape][poc] (demonstrates the host-crash path) |
-| KEV / EPSS / CVSS | Not yet scored (record newly published) |
+| KEV / EPSS / CVSS | CVSS 7.8 Important (Red Hat CNA; NVD pending); EPSS 0.18 % (7th pct); not in KEV |
 | Related | [ITScape (CVE-2026-46316)][itscape] — the arm64 sibling by the same researcher (KVM/arm64 vGIC-ITS escape). Januscape is x86-only; ITScape is arm64-only |
 
 ## How the exploitation chain works
@@ -315,6 +315,13 @@ until patched.
   (`9291654d69e0`), 6.12.95 (`2ad3afa40ac6`), 6.18.38 (`5e470998a23e`),
   and 7.1.3 (`1ae7d5a6db6c`). 7.0.y is EOL at 7.0.14 without the fix;
   5.15.y and 5.10.y are in-window and not yet backported.
+
+### Scoring
+
+- Red Hat CNA assigned **CVSSv3 7.8 Important**
+  (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H, verified); NVD
+  status still "Received" (no NVD score yet). EPSS 0.18 % (7th
+  percentile, via api.first.org). Not in CISA KEV.
 
 ### Distributions
 
