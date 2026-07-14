@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-13
+lastmod: 2026-07-14
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -177,7 +177,8 @@ case. Red Hat shipped RHSA-2026:36957 (RHEL 9, fixed kernel
 `6.12.0-211.32.1.el10_2`); Rocky 9 and Rocky 10 have now rebuilt those
 NVRs and are fixed. RHSA-2026:37729 additionally shipped for RHEL 9.4
 Update Services for SAP Solutions (fixed kernel
-`5.14.0-427.137.1.el9_4`). RHEL 8 (4.18 el8) is still Affected
+`5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
+(fixed kernel `5.14.0-570.127.1.el9_6`). RHEL 8 (4.18 el8) is still Affected
 with no advisory — Rocky 8 remains vulnerable until then. Oracle Linux 10
 and CloudLinux OS 10 are expected to track the RHEL fixes.
 
@@ -297,7 +298,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-13.*
+*Last verified 2026-07-14.*
 
 ### Upstream
 
@@ -347,8 +348,9 @@ until patched.
   (confirmed via Rocky 10 BaseOS repodata) → `:white_check_mark:`.
   RHEL 8 still Affected with no RHSA; Rocky 8 → `:x:`.
   RHSA-2026:37729 additionally shipped for RHEL 9.4 EUS
-  (`5.14.0-427.137.1.el9_4`); not reflected in the Rocky 9 row, which
-  tracks the main RHEL 9.x release.
+  (`5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
+  (`5.14.0-570.127.1.el9_6`); neither reflected in the Rocky 9 row,
+  which tracks the main RHEL 9.x release.
 - **Amazon Linux** (via repodata `updateinfo.xml.gz`): no ALAS advisory
   for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
   AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
