@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-14
+lastmod: 2026-07-15
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -128,7 +128,7 @@ disclosures, appear only in prose where relevant.
 | NixOS | 26.05 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed — ships 6.18.38 (carries the backport) |
 | Rocky Linux | 10 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — ships 6.12.0-211.32.1.el10_2 (RLSA rebuild of RHSA-2026:36956; carries the backport) |
 | Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — ships 5.14.0-687.24.1.el9_8 (RLSA rebuild of RHSA-2026:36957; carries the backport) |
-| Rocky Linux | 8 | 4.18.0-553.el8_10 | — | :x: Vulnerable — el8 4.18 carries the bug, no fix yet |
+| Rocky Linux | 8 | 4.18.0-553.el8_10 | — | :x: Vulnerable — el8 4.18 carries the bug; RLSA rebuild pending (RHSA-2026:39083) |
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.176 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.36-69.136 | — | :x: Vulnerable — in-window, no ALAS |
@@ -178,8 +178,10 @@ case. Red Hat shipped RHSA-2026:36957 (RHEL 9, fixed kernel
 NVRs and are fixed. RHSA-2026:37729 additionally shipped for RHEL 9.4
 Update Services for SAP Solutions (fixed kernel
 `5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
-(fixed kernel `5.14.0-570.127.1.el9_6`). RHEL 8 (4.18 el8) is still Affected
-with no advisory — Rocky 8 remains vulnerable until then. Oracle Linux 10
+(fixed kernel `5.14.0-570.127.1.el9_6`). RHSA-2026:39083 shipped for
+RHEL 8 on 2026-07-14 (fixed kernel `4.18.0-553.143.1.el8_10`); AlmaLinux 8
+rebuilt as ALSA-2026:39083. Rocky 8 RLSA rebuild is pending as of
+2026-07-15 — its BaseOS repodata does not yet carry 553.143.1. Oracle Linux 10
 and CloudLinux OS 10 are expected to track the RHEL fixes.
 
 ### Amazon Linux
@@ -298,7 +300,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-14.*
+*Last verified 2026-07-15.*
 
 ### Upstream
 
@@ -353,11 +355,14 @@ until patched.
   `5.14.0-687.24.1.el9_8` (confirmed via Rocky 9 BaseOS repodata) →
   `:white_check_mark:`. Rocky 10 BaseOS ships `6.12.0-211.32.1.el10_2`
   (confirmed via Rocky 10 BaseOS repodata) → `:white_check_mark:`.
-  RHEL 8 still Affected with no RHSA; Rocky 8 → `:x:`.
   RHSA-2026:37729 additionally shipped for RHEL 9.4 EUS
   (`5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
   (`5.14.0-570.127.1.el9_6`); neither reflected in the Rocky 9 row,
-  which tracks the main RHEL 9.x release.
+  which tracks the main RHEL 9.x release. RHSA-2026:39083 shipped for
+  RHEL 8 on 2026-07-14 (fixed NVR `4.18.0-553.143.1.el8_10`, via Red
+  Hat security API); AlmaLinux 8 rebuilt as ALSA-2026:39083
+  (via errata.almalinux.org). Rocky 8 BaseOS does not yet carry
+  553.143.1 (confirmed via Rocky 8 BaseOS repodata) → `:x:` pending.
 - **Amazon Linux** (via repodata `updateinfo.xml.gz`): no ALAS advisory
   for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
   AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
