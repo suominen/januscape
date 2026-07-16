@@ -1,6 +1,6 @@
 baseURL = "https://kimmo.cloud/januscape/"
 locale = "en-US"
-title = "Januscape (CVE-2026-53359) — KVM guest-to-host escape"
+title = "CVE-2026-53359 — Januscape"
 copyright = "Copyright © 2026 [Kimmo Suominen](https://kimmo.suominen.com/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
 
 enableEmoji = true
