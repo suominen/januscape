@@ -117,18 +117,18 @@ disclosures, appear only in prose where relevant.
 
 | Distribution | Release | Kernel | Fixed since | Status |
 |---|---|---|---|---|
-| Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed — ships 7.1.3 (carries the backport) |
-| Debian | forky (testing) | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed — ships 7.1.3-1 (carries the backport) |
-| Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — ships 6.12.95-1 via trixie-security (carries the backport) |
+| Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
+| Debian | forky (testing) | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
+| Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — below 6.1.177 |
 | Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
-| Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed — ships 7.0.14-4-pve (carries the backport) |
-| Proxmox VE | 8 | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed — ships 6.8.12-33-pve (carries the backport) |
-| NixOS | Unstable | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed — ships 6.18.38 (carries the backport) |
-| NixOS | 26.05 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed — ships 6.18.38 (carries the backport) |
-| Rocky Linux | 10 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — ships 6.12.0-211.32.1.el10_2 (RLSA rebuild of RHSA-2026:36956; carries the backport) |
-| Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — ships 5.14.0-687.24.1.el9_8 (RLSA rebuild of RHSA-2026:36957; carries the backport) |
-| Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — ships 4.18.0-553.144.1.el8_10 (RLSA-2026:39179; carries the backport) |
+| Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 8 | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | Unstable | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | 26.05 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| Rocky Linux | 10 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36956) |
+| Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36957) |
+| Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed (RLSA-2026:39179) |
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.176 | — | :x: Vulnerable — in-window, no ALAS |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.36-69.136 | — | :x: Vulnerable — in-window, no ALAS |
