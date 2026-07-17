@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-16
+lastmod: 2026-07-17
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -120,7 +120,7 @@ disclosures, appear only in prose where relevant.
 | Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed |
-| Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — below 6.1.177 |
+| Debian | 12 (bookworm) | 6.1.170-3 | — | :x: Vulnerable — Debian security tracker open |
 | Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
 | Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 8 | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
@@ -304,7 +304,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-16.*
+*Last verified 2026-07-17.*
 
 ### Upstream
 
@@ -335,10 +335,10 @@ until patched.
   `7.1.3-1`, testing (forky) `7.1.3-1` (first seen in snapshot
   2026-07-04), and stable (trixie) `6.12.95-1` (DSA-6381-1, via
   `trixie-security`, first seen 2026-07-05) all carry the backport → fixed. Oldstable
-  (bookworm) `6.1.170-3` (a `6.1.176-1` bookworm-security upload exists
-  but is still < 6.1.177 — verdict unchanged, version not recorded), and
-  oldoldstable (bullseye) `5.10.223-1` (5.10.y unpatched upstream) remain
-  vulnerable.
+  (bookworm) `6.1.170-3` (`6.1.177-1` now in `bookworm-security` but
+  Debian security tracker still OPEN — verdict unchanged, version not
+  recorded), and oldoldstable (bullseye) `5.10.223-1` (5.10.y unpatched
+  upstream) remain vulnerable.
 - **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
   in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
   default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
