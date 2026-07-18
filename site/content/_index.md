@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-17
+lastmod: 2026-07-18
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -185,8 +185,10 @@ rebuilt as ALSA-2026:39083. Rocky 8 rebuilt as RLSA-2026:39179 (kernel
 553.143.1 and carries the backport. RHSA-2026:40082 additionally shipped for
 RHEL 9.2 Update Services for SAP Solutions (fixed kernel
 `5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for RHEL 10.0 EUS (fixed
-kernel `6.12.0-55.88.1.el10_0`). Oracle Linux 10 and CloudLinux OS 10 are
-expected to track the RHEL fixes.
+kernel `6.12.0-55.88.1.el10_0`). RHSA-2026:41229 additionally shipped for
+RHEL 8.8 Telecommunications Update Service and Update Services for SAP
+Solutions on 2026-07-17 (fixed kernel `4.18.0-477.154.1.el8_8`). Oracle
+Linux 10 and CloudLinux OS 10 are expected to track the RHEL fixes.
 
 ### Amazon Linux
 
@@ -304,7 +306,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-17.*
+*Last verified 2026-07-18.*
 
 ### Upstream
 
@@ -365,6 +367,8 @@ until patched.
   which tracks the main RHEL 9.x release. RHSA-2026:40082 shipped for
   RHEL 9.2 E4S (`5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for
   RHEL 10.0 EUS (`6.12.0-55.88.1.el10_0`) (via Red Hat security API).
+  RHSA-2026:41229 shipped for RHEL 8.8 TUS and SAP Solutions
+  (`4.18.0-477.154.1.el8_8`, 2026-07-17; via Red Hat security API).
   RHSA-2026:39083 shipped for RHEL 8 on 2026-07-14 (fixed NVR
   `4.18.0-553.143.1.el8_10`, via Red Hat security API); AlmaLinux 8
   rebuilt as ALSA-2026:39083 (via errata.almalinux.org). Rocky 8 BaseOS
