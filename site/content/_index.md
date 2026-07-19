@@ -86,11 +86,11 @@ a backport as of this writing.
 
 | Branch | Status | Current | Notes |
 |---|---|---|---|
-| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc2 | first fixed release v7.2-rc1 |
-| 7.1.x | :white_check_mark: Carries the backport | 7.1.3 | first fixed point release |
+| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc3 | first fixed release v7.2-rc1 |
+| 7.1.x | :white_check_mark: Carries the backport | 7.1.4 | first fixed point release |
 | 7.0.x | :x: Not backported | 7.0.14 (EOL) | in window; end of life without the fix |
-| 6.18.x | :white_check_mark: Carries the backport | 6.18.38 | LTS; first fixed point release |
-| 6.12.x | :white_check_mark: Carries the backport | 6.12.95 | LTS; first fixed point release |
+| 6.18.x | :white_check_mark: Carries the backport | 6.18.39 | LTS; first fixed point release |
+| 6.12.x | :white_check_mark: Carries the backport | 6.12.96 | LTS; first fixed point release |
 | 6.6.x | :white_check_mark: Carries the backport | 6.6.144 | LTS; first fixed point release |
 | 6.1.x | :white_check_mark: Carries the backport | 6.1.177 | LTS; first fixed point release |
 | 5.15.x | :x: Not backported | 5.15.211 | in window; no backport yet |
