@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-19
+lastmod: 2026-07-20
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -86,7 +86,7 @@ a backport as of this writing.
 
 | Branch | Status | Current | Notes |
 |---|---|---|---|
-| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc3 | first fixed release v7.2-rc1 |
+| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc4 | first fixed release v7.2-rc1 |
 | 7.1.x | :white_check_mark: Carries the backport | 7.1.4 | first fixed point release |
 | 7.0.x | :x: Not backported | 7.0.14 (EOL) | in window; end of life without the fix |
 | 6.18.x | :white_check_mark: Carries the backport | 6.18.39 | LTS; first fixed point release |
@@ -307,7 +307,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-19.*
+*Last verified 2026-07-20.*
 
 ### Upstream
 
