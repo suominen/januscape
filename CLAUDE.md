@@ -339,7 +339,7 @@ git worktree remove ~/src/auto-update/januscape
 git branch -d auto-update
 ```
 
-## Local kernel clones for git.kernel.org
+## Local reference clones
 
 git.kernel.org's cgit HTML pages (any URL ending in /log/, /tree/,
 /commit/, etc.) are Anubis-gated; WebFetch hits the no-JS challenge and the
@@ -351,6 +351,7 @@ long-living local clones under `~/src/linux/`:
 | `~/src/linux/stable` | `https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git` |
 | `~/src/linux/kvm`    | `git://git.kernel.org/pub/scm/virt/kvm/kvm.git`                    |
 | `~/src/linux/vulns`  | `https://git.kernel.org/pub/scm/linux/security/vulns.git`          |
+| `~/src/proxmox/pve-kernel` | `https://git.proxmox.com/git/pve-kernel.git`                 |
 
 `kvm` is the KVM maintainer tree, where KVM fixes (x86 and arm64) land and
 get tagged for stable before Linus — handy for confirming a backport's
@@ -467,12 +468,19 @@ moves (2.1.0 flipped the VE 9 default from 6.14 to 7.0).
 
 Whether a Proxmox kernel carries the fix tracks its Ubuntu series, not
 Debian's.  To confirm a cherry-pick, read the packaging changelog in
-Proxmox's kernel git — `https://git.proxmox.com/git/pve-kernel.git`,
-branch `master` for the current PVE 9 series, `bookworm-6.8` for PVE 8.
-Proxmox lists every security cherry-pick there by name/CVE.  The cgit HTML
-may be gated, but git smart-HTTP works headless: shallow-clone with
-`--depth 1` (the kernel itself is an unfetched submodule, so the clone is
-small) and read `debian/changelog` plus `patches/`.
+Proxmox's kernel git, where Proxmox lists every security cherry-pick by
+name/CVE.  The cgit HTML may be gated, so read it from the shared local
+clone at `~/src/proxmox/pve-kernel` via its `origin/...` refs — the wrapper
+refreshes it each run, alongside the other reference clones:
+
+```
+git -C ~/src/proxmox/pve-kernel show origin/master:debian/changelog
+```
+
+Branch `master` is the current PVE 9 series, `bookworm-6.8` is PVE 8; read
+`patches/` from the same refs.  Do not clone it per run: it is a shared
+reference like `~/src/linux/stable`, and a clone made inside the worktree
+leaves untracked debris that stalls every later run.
 
 The enterprise repository (`enterprise.proxmox.com`) is HTTP-auth-gated
 (401 without subscription credentials), so it cannot be polled headlessly.
