@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-20
+lastmod: 2026-07-21
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -130,8 +130,8 @@ disclosures, appear only in prose where relevant.
 | Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36957) |
 | Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed (RLSA-2026:39179) |
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
-| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.176 | — | :x: Vulnerable — in-window, no ALAS |
-| Amazon Linux | 2023 (kernel6.18) | 6.18.36-69.136 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1970) |
+| Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1969) |
 | Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
 | Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
 | Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
@@ -193,11 +193,13 @@ Linux 10 and CloudLinux OS 10 are expected to track the RHEL fixes.
 
 ### Amazon Linux
 
-AL2023 (default 6.1 stream) and AL2 (4.14) both carry the bug. Amazon's
-ALAS explorer recognises CVE-2026-53359 as an important-severity kernel
-issue, but as of 2026-07-08 no ALAS advisory has been issued for either
-distribution — the Advisory column is empty for all affected `kernel`
-packages. AL2023 remains vulnerable until Amazon ships a patched kernel.
+AL2023's opt-in kernel6.18 and kernel6.12 streams have received fixes.
+Amazon shipped ALAS2023-2026-1969 (2026-07-20) for kernel6.18,
+fixing CVE-2026-53359 in `kernel6.18-6.18.38-73.137.amzn2023`; upstream
+6.18.38 carries the backport. Amazon shipped ALAS2023-2026-1970
+(2026-07-20) for kernel6.12, fixing CVE-2026-53359 via a cherry-pick into
+`kernel6.12-6.12.94-123.190.amzn2023`. The AL2023 **default 6.1 stream**
+(`kernel`) has not received an ALAS for this CVE and remains vulnerable.
 **AL2**, however, reached end of support on **2026-06-30**: AWS no longer
 provides security updates or bug fixes for AL2 core packages, so its
 three streams (4.14, plus 5.10 / 5.15 via `amazon-linux-extras`) are not
@@ -307,7 +309,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-20.*
+*Last verified 2026-07-21.*
 
 ### Upstream
 
@@ -376,12 +378,14 @@ until patched.
   ships `4.18.0-553.144.1.el8_10` via RLSA-2026:39179 (confirmed via
   Rocky 8 BaseOS repodata + updateinfo); this build supersedes 553.143.1
   and carries the backport → `:white_check_mark:`.
-- **Amazon Linux** (via repodata `updateinfo.xml.gz`): no ALAS advisory
-  for CVE-2026-53359 in AL2023 core (kernel 6.1), AL2 core (kernel 4.14),
-  AL2 kernel-5.10, or AL2 kernel-5.15 → `:x:` for all four. AL2023
-  kernel6.12 and kernel6.18 extras repos returned 403 headlessly; their
-  verdicts unchanged from prior run (`:x:`). **AL2 reached end of support
-  on 2026-06-30** (per the AWS AL2 FAQ; confirmed against endoflife.date)
+- **Amazon Linux** (via repodata `updateinfo.xml.gz`): ALAS2023-2026-1969
+  (issued 2026-07-20) fixes CVE-2026-53359 in `kernel6.18-6.18.38-73.137`
+  (upstream 6.18.38 carries the backport) → AL2023 kernel6.18 now
+  `:white_check_mark:`. ALAS2023-2026-1970 (issued 2026-07-20) fixes
+  CVE-2026-53359 via cherry-pick in `kernel6.12-6.12.94-123.190` → AL2023
+  kernel6.12 now `:white_check_mark:`. AL2023 core (kernel 6.1) has no
+  ALAS for CVE-2026-53359 → `:x:`. **AL2 reached end of support on
+  2026-06-30** (per the AWS AL2 FAQ; confirmed against endoflife.date)
   without an ALAS for this CVE — its three rows are marked "no fix
   expected" and will not flip.
 
