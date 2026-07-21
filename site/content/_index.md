@@ -163,7 +163,11 @@ default as of `proxmox-default-kernel` 2.1.0), both now in the
 `pve-no-subscription` repository. The 6.17 series fix
 (`proxmox-kernel-6.17.13-15-pve`) subsequently shipped to
 `pve-no-subscription` as well (advisory PSA-2026-00027-1); PVE 9 systems
-running the 6.17 kernel are now covered. Proxmox publishes kernel updates
+running the 6.17 kernel are now covered. The opt-in
+`proxmox-kernel-6.14` (`bpo12`) series for PVE 8 has not received a
+Januscape cherry-pick; its latest release (`6.14.11-9~bpo12+1`,
+2026-05-15) predates the disclosure, leaving PVE 8 systems using this
+opt-in kernel vulnerable. Proxmox publishes kernel updates
 to `pve-no-subscription` first; the enterprise repository receives the
 same kernels later. Proxmox VE is x86-only, so it does not appear in the
 [ITScape][itscape] (arm64) tracker.
@@ -351,6 +355,9 @@ until patched.
   2.1.0) both carry the backport → `:white_check_mark:`. The 6.17 series fix
   `proxmox-kernel-6.17.13-15-pve` subsequently landed in
   `pve-no-subscription` (advisory PSA-2026-00027-1); confirmed in Packages.gz.
+  Opt-in 6.14 `bpo12` series for PVE 8 (via `origin/bookworm-6.14`
+  changelog): latest `6.14.11-9~bpo12+1` (2026-05-15) carries no Januscape
+  cherry-pick → PVE 8 systems on this opt-in remain `:x:`.
 - **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
