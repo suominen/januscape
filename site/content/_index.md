@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-21
+lastmod: 2026-07-22
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -167,7 +167,10 @@ running the 6.17 kernel are now covered. The opt-in
 `proxmox-kernel-6.14` (`bpo12`) series for PVE 8 has not received a
 Januscape cherry-pick; its latest release (`6.14.11-9~bpo12+1`,
 2026-05-15) predates the disclosure, leaving PVE 8 systems using this
-opt-in kernel vulnerable. Proxmox publishes kernel updates
+opt-in kernel vulnerable. The opt-in `proxmox-kernel-6.14` (trixie)
+series for PVE 9 is in the same position: latest `6.14.11-9-pve`
+(2026-05-15) carries no Januscape cherry-pick, leaving PVE 9 systems
+on this opt-in kernel vulnerable. Proxmox publishes kernel updates
 to `pve-no-subscription` first; the enterprise repository receives the
 same kernels later. Proxmox VE is x86-only, so it does not appear in the
 [ITScape][itscape] (arm64) tracker.
@@ -313,7 +316,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-21.*
+*Last verified 2026-07-22.*
 
 ### Upstream
 
@@ -357,7 +360,10 @@ until patched.
   `pve-no-subscription` (advisory PSA-2026-00027-1); confirmed in Packages.gz.
   Opt-in 6.14 `bpo12` series for PVE 8 (via `origin/bookworm-6.14`
   changelog): latest `6.14.11-9~bpo12+1` (2026-05-15) carries no Januscape
-  cherry-pick → PVE 8 systems on this opt-in remain `:x:`.
+  cherry-pick → PVE 8 systems on this opt-in remain `:x:`. Opt-in 6.14
+  trixie series for PVE 9 (via `origin/trixie-6.14` changelog): latest
+  `6.14.11-9-pve` (2026-05-15) carries no Januscape cherry-pick → PVE 9
+  systems on this opt-in also remain `:x:`.
 - **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
