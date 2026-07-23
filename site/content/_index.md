@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-22
+lastmod: 2026-07-23
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -188,7 +188,9 @@ Update Services for SAP Solutions (fixed kernel
 `5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
 (fixed kernel `5.14.0-570.127.1.el9_6`). RHSA-2026:39083 shipped for
 RHEL 8 on 2026-07-14 (fixed kernel `4.18.0-553.143.1.el8_10`); AlmaLinux 8
-rebuilt as ALSA-2026:39083. Rocky 8 rebuilt as RLSA-2026:39179 (kernel
+rebuilt as ALSA-2026:39083. RHSA-2026:39082 additionally shipped for RHEL 8
+NFV on 2026-07-14 (fixed real-time kernel
+`4.18.0-553.143.1.rt7.484.el8_10`). Rocky 8 rebuilt as RLSA-2026:39179 (kernel
 `4.18.0-553.144.1.el8_10`, issued 2026-07-15); this build supersedes
 553.143.1 and carries the backport. RHSA-2026:40082 additionally shipped for
 RHEL 9.2 Update Services for SAP Solutions (fixed kernel
@@ -316,7 +318,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-22.*
+*Last verified 2026-07-23.*
 
 ### Upstream
 
@@ -387,7 +389,10 @@ until patched.
   (`4.18.0-477.154.1.el8_8`, 2026-07-17; via Red Hat security API).
   RHSA-2026:39083 shipped for RHEL 8 on 2026-07-14 (fixed NVR
   `4.18.0-553.143.1.el8_10`, via Red Hat security API); AlmaLinux 8
-  rebuilt as ALSA-2026:39083 (via errata.almalinux.org). Rocky 8 BaseOS
+  rebuilt as ALSA-2026:39083 (via errata.almalinux.org).
+  RHSA-2026:39082 additionally shipped for RHEL 8 NFV on 2026-07-14
+  (fixed real-time kernel NVR `4.18.0-553.143.1.rt7.484.el8_10`, via
+  Red Hat security API). Rocky 8 BaseOS
   ships `4.18.0-553.144.1.el8_10` via RLSA-2026:39179 (confirmed via
   Rocky 8 BaseOS repodata + updateinfo); this build supersedes 553.143.1
   and carries the backport → `:white_check_mark:`.
