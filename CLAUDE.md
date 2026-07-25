@@ -166,7 +166,11 @@ Each run:
   advanced?  The maintained lines 6.1.y / 6.6.y / 6.12.y / 6.18.y / 7.1.y
   already carry the fix (6.1.177 / 6.6.144 / 6.12.95 / 6.18.38 / 7.1.3);
   watch whether 5.15.y or 5.10.y ever pick it up.  Verify via
-  `~/src/linux/stable` (recipe below).
+  `~/src/linux/stable` (recipe below).  In that table, **only the
+  *Current* column moves on a routine run**; *First fixed* is sticky —
+  set once from the `.dyad` when a branch first gains the backport, `—`
+  while unfixed — and gains a value only if a previously-unpatched
+  branch (5.15.y / 5.10.y) picks the fix up.
 - For a distro row, re-pull the distro's **kernel** version and compare:
   the kernel reaches its branch's first-fixed release **or** a distro
   advisory ships the `81ccda30b4e8` backport ⇒ flip to :white_check_mark:,

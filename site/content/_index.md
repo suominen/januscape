@@ -78,23 +78,23 @@ this bug — see [ITScape][itscape] for the arm64 escape.
 ## Upstream fixed versions
 
 The fix reached Linus as **v7.2-rc1** and the kernel CNA (CVE-2026-53359)
-backported it across every maintained stable line: **6.1.177**, **6.6.144**,
-**6.12.95**, **6.18.38**, and **7.1.3**. 7.0.y reached end of life at 7.0.14
-without the backport. The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the
-bug — the fix uses `sp->gfns[]` on those kernels — but have **not** received
-a backport as of this writing.
+backported it across every maintained stable line — the *First fixed*
+column below.  7.0.y reached end of life at 7.0.14 without the backport.
+The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the bug — the fix uses
+`sp->gfns[]` on those kernels — but have **not** received a backport as of
+this writing.
 
-| Branch | Status | Current | Notes |
-|---|---|---|---|
-| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc4 | first fixed release v7.2-rc1 |
-| 7.1.x | :white_check_mark: Carries the backport | 7.1.5 | first fixed point release |
-| 7.0.x | :x: Not backported | 7.0.14 (EOL) | in window; end of life without the fix |
-| 6.18.x | :white_check_mark: Carries the backport | 6.18.40 | LTS; first fixed point release |
-| 6.12.x | :white_check_mark: Carries the backport | 6.12.97 | LTS; first fixed point release |
-| 6.6.x | :white_check_mark: Carries the backport | 6.6.145 | LTS; first fixed point release |
-| 6.1.x | :white_check_mark: Carries the backport | 6.1.178 | LTS; first fixed point release |
-| 5.15.x | :x: Not backported | 5.15.212 | in window; no backport yet |
-| 5.10.x | :x: Not backported | 5.10.261 | in window; no backport yet |
+| Branch | Status | First fixed | Current | Notes |
+|---|---|---|---|---|
+| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc1 | v7.2-rc4 | |
+| 7.1.x | :white_check_mark: Carries the backport | 7.1.3 | 7.1.5 | |
+| 7.0.x | :x: Not backported | — | 7.0.14 (EOL) | in window; end of life without the fix |
+| 6.18.x | :white_check_mark: Carries the backport | 6.18.38 | 6.18.40 | LTS |
+| 6.12.x | :white_check_mark: Carries the backport | 6.12.95 | 6.12.97 | LTS |
+| 6.6.x | :white_check_mark: Carries the backport | 6.6.144 | 6.6.145 | LTS |
+| 6.1.x | :white_check_mark: Carries the backport | 6.1.177 | 6.1.178 | LTS |
+| 5.15.x | :x: Not backported | — | 5.15.212 | LTS; in window; no backport yet |
+| 5.10.x | :x: Not backported | — | 5.10.261 | LTS; in window; no backport yet |
 
 When verifying a tree directly, the fixed function is
 `kvm_mmu_get_child_sp()` in `arch/x86/kvm/mmu/mmu.c`; the fix adds a role

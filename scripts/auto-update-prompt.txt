@@ -67,6 +67,10 @@ thing you may leave behind is the edited tracker (and its commit).
         git -C ~/src/linux/stable log origin/linux-<series>.y \
           --grep=81ccda30b4e8 --grep='unexpected role' --format='%h %s'
       Empty output means the series is still unpatched.
+      In the *Upstream fixed versions* table, update only the *Current*
+      column; *First fixed* is sticky and gains a value only when a
+      previously-unpatched branch (5.15.y / 5.10.y) first picks up the
+      backport.
 
    b. CVE record — CVE-2026-53359 is already assigned. The authoritative
       per-branch introduced:fixed versions are in the vulns.git dyad
