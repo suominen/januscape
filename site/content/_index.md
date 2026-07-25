@@ -100,7 +100,7 @@ vulnerable).
 | Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
 | Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
 | Linux kernel | 6.18.x | 6.18.40 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.12.x | 6.12.97 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.12.x | 6.12.98 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.6.x | 6.6.145 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.1.x | 6.1.178 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 5.15.x | 5.15.212 | — | — | :x: Vulnerable — LTS, no backport yet |
@@ -119,9 +119,9 @@ vulnerable).
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | NixOS | 26.05 | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| Rocky Linux | 10 | 6.12.0-211.33.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
-| Rocky Linux | 9 | 5.14.0-687.25.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
-| Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
+| Rocky Linux | 10 | 6.12.0-211.37.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
+| Rocky Linux | 9 | 5.14.0-687.29.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
+| Rocky Linux | 8 | 4.18.0-553.146.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1969 |
