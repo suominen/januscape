@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-23
+lastmod: 2026-07-25
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -87,14 +87,14 @@ a backport as of this writing.
 | Branch | Status | Current | Notes |
 |---|---|---|---|
 | Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc4 | first fixed release v7.2-rc1 |
-| 7.1.x | :white_check_mark: Carries the backport | 7.1.4 | first fixed point release |
+| 7.1.x | :white_check_mark: Carries the backport | 7.1.5 | first fixed point release |
 | 7.0.x | :x: Not backported | 7.0.14 (EOL) | in window; end of life without the fix |
-| 6.18.x | :white_check_mark: Carries the backport | 6.18.39 | LTS; first fixed point release |
-| 6.12.x | :white_check_mark: Carries the backport | 6.12.96 | LTS; first fixed point release |
-| 6.6.x | :white_check_mark: Carries the backport | 6.6.144 | LTS; first fixed point release |
-| 6.1.x | :white_check_mark: Carries the backport | 6.1.177 | LTS; first fixed point release |
-| 5.15.x | :x: Not backported | 5.15.211 | in window; no backport yet |
-| 5.10.x | :x: Not backported | 5.10.260 | in window; no backport yet |
+| 6.18.x | :white_check_mark: Carries the backport | 6.18.40 | LTS; first fixed point release |
+| 6.12.x | :white_check_mark: Carries the backport | 6.12.97 | LTS; first fixed point release |
+| 6.6.x | :white_check_mark: Carries the backport | 6.6.145 | LTS; first fixed point release |
+| 6.1.x | :white_check_mark: Carries the backport | 6.1.178 | LTS; first fixed point release |
+| 5.15.x | :x: Not backported | 5.15.212 | in window; no backport yet |
+| 5.10.x | :x: Not backported | 5.10.261 | in window; no backport yet |
 
 When verifying a tree directly, the fixed function is
 `kvm_mmu_get_child_sp()` in `arch/x86/kvm/mmu/mmu.c`; the fix adds a role
@@ -129,7 +129,7 @@ disclosures, appear only in prose where relevant.
 | Rocky Linux | 10 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36956) |
 | Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36957) |
 | Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed (RLSA-2026:39179) |
-| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-220.360 | — | :x: Vulnerable — in-window, no ALAS |
+| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed (ALAS2023-2026-2001) |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1970) |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1969) |
 | Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
@@ -195,20 +195,23 @@ NFV on 2026-07-14 (fixed real-time kernel
 553.143.1 and carries the backport. RHSA-2026:40082 additionally shipped for
 RHEL 9.2 Update Services for SAP Solutions (fixed kernel
 `5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for RHEL 10.0 EUS (fixed
-kernel `6.12.0-55.88.1.el10_0`). RHSA-2026:41229 additionally shipped for
+kernel `6.12.0-55.88.1.el10_0`). RHSA-2026:39983 additionally shipped for
+RHEL 9.2 E4S NFV on 2026-07-15 (fixed real-time kernel
+`5.14.0-284.181.1.rt14.466.el9_2`). RHSA-2026:41229 additionally shipped for
 RHEL 8.8 Telecommunications Update Service and Update Services for SAP
 Solutions on 2026-07-17 (fixed kernel `4.18.0-477.154.1.el8_8`). Oracle
 Linux 10 and CloudLinux OS 10 are expected to track the RHEL fixes.
 
 ### Amazon Linux
 
-AL2023's opt-in kernel6.18 and kernel6.12 streams have received fixes.
-Amazon shipped ALAS2023-2026-1969 (2026-07-20) for kernel6.18,
-fixing CVE-2026-53359 in `kernel6.18-6.18.38-73.137.amzn2023`; upstream
-6.18.38 carries the backport. Amazon shipped ALAS2023-2026-1970
-(2026-07-20) for kernel6.12, fixing CVE-2026-53359 via a cherry-pick into
-`kernel6.12-6.12.94-123.190.amzn2023`. The AL2023 **default 6.1 stream**
-(`kernel`) has not received an ALAS for this CVE and remains vulnerable.
+All three AL2023 kernel streams have now received fixes. Amazon shipped
+ALAS2023-2026-1969 (2026-07-20) for kernel6.18, fixing CVE-2026-53359 in
+`kernel6.18-6.18.38-73.137.amzn2023`; upstream 6.18.38 carries the
+backport. Amazon shipped ALAS2023-2026-1970 (2026-07-20) for kernel6.12,
+fixing CVE-2026-53359 via a cherry-pick into
+`kernel6.12-6.12.94-123.190.amzn2023`. Amazon shipped ALAS2023-2026-2001
+(2026-07-24) for the **default 6.1 stream** (`kernel`), fixing
+CVE-2026-53359 via a cherry-pick into `kernel-6.1.176-221.367.amzn2023`.
 **AL2**, however, reached end of support on **2026-06-30**: AWS no longer
 provides security updates or bug fixes for AL2 core packages, so its
 three streams (4.14, plus 5.10 / 5.15 via `amazon-linux-extras`) are not
@@ -318,7 +321,7 @@ until patched.
 
 ## Verification log
 
-*Last verified 2026-07-23.*
+*Last verified 2026-07-25.*
 
 ### Upstream
 
@@ -385,8 +388,11 @@ until patched.
   which tracks the main RHEL 9.x release. RHSA-2026:40082 shipped for
   RHEL 9.2 E4S (`5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for
   RHEL 10.0 EUS (`6.12.0-55.88.1.el10_0`) (via Red Hat security API).
-  RHSA-2026:41229 shipped for RHEL 8.8 TUS and SAP Solutions
-  (`4.18.0-477.154.1.el8_8`, 2026-07-17; via Red Hat security API).
+  RHSA-2026:39983 shipped for RHEL 9.2 E4S NFV (2026-07-15; fixed
+  real-time kernel `5.14.0-284.181.1.rt14.466.el9_2`; via Red Hat
+  security API). RHSA-2026:41229 shipped for RHEL 8.8 TUS and SAP
+  Solutions (`4.18.0-477.154.1.el8_8`, 2026-07-17; via Red Hat security
+  API).
   RHSA-2026:39083 shipped for RHEL 8 on 2026-07-14 (fixed NVR
   `4.18.0-553.143.1.el8_10`, via Red Hat security API); AlmaLinux 8
   rebuilt as ALSA-2026:39083 (via errata.almalinux.org).
@@ -401,11 +407,12 @@ until patched.
   (upstream 6.18.38 carries the backport) → AL2023 kernel6.18 now
   `:white_check_mark:`. ALAS2023-2026-1970 (issued 2026-07-20) fixes
   CVE-2026-53359 via cherry-pick in `kernel6.12-6.12.94-123.190` → AL2023
-  kernel6.12 now `:white_check_mark:`. AL2023 core (kernel 6.1) has no
-  ALAS for CVE-2026-53359 → `:x:`. **AL2 reached end of support on
-  2026-06-30** (per the AWS AL2 FAQ; confirmed against endoflife.date)
-  without an ALAS for this CVE — its three rows are marked "no fix
-  expected" and will not flip.
+  kernel6.12 now `:white_check_mark:`. ALAS2023-2026-2001 (issued
+  2026-07-24) fixes CVE-2026-53359 via cherry-pick in
+  `kernel-6.1.176-221.367` → AL2023 default kernel (6.1) now
+  `:white_check_mark:`. **AL2 reached end of support on 2026-06-30** (per
+  the AWS AL2 FAQ; confirmed against endoflife.date) without an ALAS for
+  this CVE — its three rows are marked "no fix expected" and will not flip.
 
 ## References
 
