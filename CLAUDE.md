@@ -112,14 +112,27 @@ column:
   `root:kvm 0660` node (Debian/Ubuntu default) limits that to the `kvm`
   group.  It does not affect the guest-escape vector.
 
-The combined distribution-status table is the **single source** for each
-row's kernel, *Fixed since*, and status.  Don't restate the table's columns
-in prose or add a parallel per-release table.  The **Kernel** cell holds
-the version only (or `:grey_question:` when unverified) — no
-"unpatched"/"patched" word, since *Status* and *Fixed since* carry the
-verdict.  Label NixOS channels in the **Release** column in friendly form
-(`Unstable`, `26.05`).  Keep the `{.distros}` block attribute on the line
-**immediately after** the table (no blank line between).
+The combined *Patch status* table is the **single source** for every
+row's kernel versions, dates, and status — upstream and distros alike.
+Columns: `Distribution | Release | Current kernel | First fixed | Fixed
+since | Status`.  The upstream kernel is the **first** "distribution" in
+the table, labelled `Linux kernel`, one row per branch (`mainline`,
+`7.1.x`, … `5.10.x`); its upstream-specific prose lives in the
+`### Linux kernel` subsection.  Don't restate the table's columns in
+prose or add a parallel per-release table.  The version cells hold
+versions only (or `:grey_question:` when unverified) — the verdict lives
+in *Status* as the emoji **plus a one-word verdict** and an optional
+short note after an em dash (`:white_check_mark: Fixed —
+PSA-2026-00027-1`, `:x: Vulnerable — no cherry-pick`); longer caveats go
+in the `###` prose.  Label NixOS channels in the **Release** column in
+friendly form (`Unstable`, `26.05`).  Row and list ordering: releases
+**descending** within a distribution; within a release the default
+kernel row first, then opt-in/alternate series rows **ascending**.  The
+same rule applies to version lists in prose.  Rows sharing a
+Distribution value must stay contiguous — the browser transform renders
+each run as one group heading row.  Keep the `{.distros}` block
+attribute on the line **immediately after** the table (no blank line
+between).
 
 Amazon rows are **one per kernel stream** — name the stream in the
 **Release** column (`2023 (kernel6.12)`, `2 (kernel-5.10)`); keep every
@@ -130,62 +143,69 @@ the three AL2 rows are terminal `:x:` ("no fix expected"); don't poll AL2
 repodata expecting a verdict change.  AL2023 remains supported and is
 polled as usual.
 
-Debian rows track the **default** `linux` kernel of the suite.  An opt-in
-alternative kernel package (e.g. bullseye's `linux-6.1`, the bookworm 6.1
-kernel rebuilt for bullseye) does **not** flip a row's verdict: while
-`src:linux` is open in the security tracker the row stays vulnerable, with
-the opt-in fixed kernel noted in the *Status* cell and `### Debian` prose.
+Debian suites get one row for the **default** `linux` kernel and, where
+one exists, a separate row per opt-in alternative kernel package (e.g.
+bullseye's `linux-6.1`, the bookworm 6.1 kernel rebuilt for bullseye —
+row `11 (linux-6.1 opt-in)`; it tracks bookworm's `src:linux` version,
+so its verdict follows bookworm's *base-suite* status, currently
+vulnerable at 6.1.176 < first-fixed 6.1.177).  An opt-in row's verdict
+never flips the default row's: while `src:linux` is open for a suite in
+the security tracker, that suite's default row stays vulnerable.  The
+same default-plus-variant row pattern applies to Proxmox (default and
+opt-in `proxmox-kernel-*` series).  Niche variants (e.g. the EL
+`kernel-rt` real-time kernel) get **no** row — cover them as a
+reader-facing note in the `### Rocky Linux / RHEL family` prose.
 
 A per-distro `###` section is for **reader-facing** caveats that don't fit
 the table (`/dev/kvm` exposure, nested-virt posture, EL-family scope).
 Keep tracking methodology out of it — that is agent guidance and belongs in
 this file.
 
-## Routine run scope — frozen version snapshots
+## Routine run scope — live Current kernel, sticky verdict columns
 
-The per-distro **Kernel** versions in the table are **frozen seed
-snapshots**, not live values: update a row's recorded version only when its
-verdict actually changes.  A row cannot flip to fixed until the fix is
-available to adopt — its kernel series carries :white_check_mark: in the
-*Upstream fixed versions* table, **or** the distro cherry-picks
-`81ccda30b4e8` independently.
+The **Current kernel** column is **live**: refresh it for **every** row
+on every run — upstream point releases and distro package versions
+alike — and record any movement.  A Current-kernel bump alone is a real
+content change: commit it and bump `lastmod`.  The **verdict columns
+are sticky**: *First fixed*, *Fixed since*, and *Status* change **only**
+when a row actually flips — its kernel reaches a fixed upstream release
+(see the `Linux kernel` rows), **or** the distro ships the
+`81ccda30b4e8` backport / cherry-pick.  A Current-kernel bump that stays
+inside the vulnerable window without the backport moves the *Current
+kernel* cell and **nothing else**.
 
-**Exception — a default-kernel-series switch is always recordable.** PVE
-moves its default series during a release's lifetime (`proxmox-default-kernel`
-changing which `proxmox-kernel-*` it depends on), and a distro can add an
-opt-in series alongside it.  Record that even when the verdict does not
-change: the row's kernel, the prose, and the verification log **together**,
-since a log-only update leaves the tracker self-inconsistent.  A switch can
-also flip the verdict on its own — a newer series may already contain the
-fix, or a still-EOL one may not — so re-derive the verdict rather than
-carrying the old one across.
+**A default-kernel-series switch is always recordable.** PVE moves its
+default series during a release's lifetime (`proxmox-default-kernel`
+changing which `proxmox-kernel-*` it depends on), and a distro can add
+an opt-in series alongside it.  Record a switch in the affected row's
+Release label and prose, add a **new row** for a new opt-in series, and
+update the verification log — **together**, since a log-only update
+leaves the tracker self-inconsistent.  A switch can also flip a verdict
+on its own — a newer series may already contain the fix, or a still-EOL
+one may not — so re-derive the verdict rather than carrying the old one
+across.
 
 Each run:
 
-- Re-check the *Upstream fixed versions* table: has any in-window branch
-  advanced?  The maintained lines 6.1.y / 6.6.y / 6.12.y / 6.18.y / 7.1.y
-  already carry the fix (6.1.177 / 6.6.144 / 6.12.95 / 6.18.38 / 7.1.3);
-  watch whether 5.15.y or 5.10.y ever pick it up.  Verify via
-  `~/src/linux/stable` (recipe below).  In that table, **only the
-  *Current* column moves on a routine run**; *First fixed* is sticky —
-  set once from the `.dyad` when a branch first gains the backport, `—`
-  while unfixed — and gains a value only if a previously-unpatched
-  branch (5.15.y / 5.10.y) picks the fix up.
-- For a distro row, re-pull the distro's **kernel** version and compare:
-  the kernel reaches its branch's first-fixed release **or** a distro
-  advisory ships the `81ccda30b4e8` backport ⇒ flip to :white_check_mark:,
-  record the adopted kernel, set *Fixed since*.
-- A version bump that stays **inside the vulnerable window without the
-  backport** is **not** adoption ⇒ leave the row and its recorded version
-  untouched.  Recording such a bump is version-only churn this tracker
-  exists to avoid.
-- Watch AlmaLinux (leading indicator) and Rocky/RHEL for the EL rows, and
-  Ubuntu for the Proxmox rows.
+- Refresh the `Linux kernel` rows' *Current kernel* from the stable
+  point releases (finger_banner; verify backports via
+  `~/src/linux/stable`, recipe below).  The maintained lines 7.1.y /
+  6.18.y / 6.12.y / 6.6.y / 6.1.y already carry the fix (7.1.3 /
+  6.18.38 / 6.12.95 / 6.6.144 / 6.1.177); watch whether 5.15.y or
+  5.10.y ever pick it up — *First fixed* is sticky, set once from the
+  `.dyad` when a branch first gains the backport, and *Fixed since* is
+  the release tag date from `~/src/linux/stable`.
+- For a distro row, re-pull the distro's **kernel** version and update
+  *Current kernel*.  If the kernel reaches its branch's first-fixed
+  release **or** a distro advisory ships the `81ccda30b4e8` backport ⇒
+  flip *Status* to `:white_check_mark: Fixed`, set *First fixed* to the
+  first fixed package build, and set *Fixed since*.
+- Watch AlmaLinux (leading indicator) and Rocky/RHEL for the EL rows,
+  and Ubuntu for the Proxmox rows.
 
 `zcat` / `gunzip` **are** in the headless allowlist — use them for the
-`Packages.gz` / repodata pulls.  The discipline is *what* you pull, not
-*whether you can*: pull only the kernel version, only when a verdict could
-change.
+`Packages.gz` / repodata pulls.  Pull only kernel versions and advisory
+state — the tracker records no other per-distro facts.
 
 **Never record NixOS channel git-revisions** (the
 `channels.nixos.org/<channel>/git-revision` pins) in the tracker.  They
@@ -194,19 +214,25 @@ otherwise no-op run.
 
 ## Conventions for status entries
 
-- `:white_check_mark:` — the release's kernel carries the `81ccda30b4e8`
-  backport (confirmed in changelog / advisory / kernel pin, not merely
-  announced): record the fixed kernel version and set *Fixed since*.  (For
-  this bug there are **no** "not affected — outside the window" rows on x86;
-  every maintained kernel is in-window.)
-- `:x:` — vulnerable: an in-window kernel without the backport.
-- `:warning:` — not fully resolved: the fix is staged but not yet in the
-  user-facing channel (merged / cherry-picked but not in a released
-  package), **or** a distro default materially reduces exposure (e.g. a
-  vendor shipping nested virt off by default).  A mitigation is **not** a
-  fix — the kernel hole remains, so it never earns `:white_check_mark:`.
-- `:grey_question:` — not yet verified (kernel pin or advisory not yet
-  inspected).
+A *Status* cell is the emoji plus its one-word verdict, optionally
+followed by an em dash and a short note (advisory ID, `LTS`, `no
+cherry-pick`) — longer caveats go in the `###` prose:
+
+- `:white_check_mark: Fixed` — the release's kernel carries the
+  `81ccda30b4e8` backport (confirmed in changelog / advisory / kernel
+  pin, not merely announced): set *First fixed* to the first fixed
+  build and set *Fixed since*.  (For this bug there are **no** "not
+  affected — outside the window" rows on x86; every maintained kernel
+  is in-window.)
+- `:x: Vulnerable` — an in-window kernel without the backport.
+- `:warning: Staged` / `:warning: Mitigated` — not fully resolved: the
+  fix is staged but not yet in the user-facing channel (merged /
+  cherry-picked but not in a released package), **or** a distro default
+  materially reduces exposure (e.g. a vendor shipping nested virt off
+  by default); the word says which.  A mitigation is **not** a fix —
+  the kernel hole remains, so it never earns `:white_check_mark:`.
+- `:grey_question: Unverified` — not yet verified (kernel pin or
+  advisory not yet inspected).
 
 Note: unlike the ipv6_frag_escape sibling, Januscape has **no** root-vs-DoS
 downgrade — both vectors (guest escape and, on EL8+, local `/dev/kvm`) are
@@ -214,12 +240,16 @@ full compromises, so an affected unpatched row is `:x:`, not `:warning:`,
 regardless of `/dev/kvm` posture.  `/dev/kvm` and nested-virt notes are
 prose about *reach*, not status.
 
-### "Fixed since" column
+### "First fixed" and "Fixed since" columns
 
-`Fixed since` is a **sticky first-observation** date: the date the
-release's kernel fix first held.  Set it when a row flips to fixed; only
-bump it if the verdict flips again or the fixed kernel version changes.
-Leave it `—` while the row is vulnerable or unverified.
+Both are **sticky**, set when a row flips to fixed, and stay `—` while
+the row is vulnerable or unverified.  *First fixed* is the first
+release or package build carrying the fix — from the `.dyad` for the
+`Linux kernel` rows, from the advisory / changelog for distro rows.
+*Fixed since* is the **first-observation** date the fix first held: the
+release tag date for `Linux kernel` rows, the advisory/ship date for
+distro rows.  Only touch either if the verdict flips again or the
+recorded first-fixed build turns out to have been wrong.
 
 ### Verification log
 
@@ -430,8 +460,8 @@ git -C ~/src/linux/vulns show origin/master:cve/published/2026/CVE-2026-53359.dy
 ```
 
 The `.dyad` gives the authoritative per-branch `<introduced>:<fixed>`
-versions used in the *Upstream fixed versions* table; the `.json` carries
-the CNA description.  A distro or MITRE CVSS could appear in NVD later —
+versions used in the `Linux kernel` rows of the *Patch status* table;
+the `.json` carries the CNA description.  A distro or MITRE CVSS could appear in NVD later —
 watch the disclosure sources for a KEV/EPSS/CVSS update to add to the
 Summary.  The repo/site slug stays `januscape` (see `WEBSITE.md`).
 

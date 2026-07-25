@@ -75,154 +75,155 @@ The reachable lifetime is therefore **v2.6.36 (2010) through v7.1**; ≥ 7.2
 carries the fix. ARM64 KVM uses a different MMU and is **not affected** by
 this bug — see [ITScape][itscape] for the arm64 escape.
 
-## Upstream fixed versions
+## Patch status
 
-The fix reached Linus as **v7.2-rc1** and the kernel CNA (CVE-2026-53359)
-backported it across every maintained stable line — the *First fixed*
-column below.  7.0.y reached end of life at 7.0.14 without the backport.
-The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the bug — the fix uses
-`sp->gfns[]` on those kernels — but have **not** received a backport as of
-this writing.
+The deciding fact per row is whether the **kernel** carries the
+[`81ccda30b4e8`][fix] backport. Because the bug dates to v2.6.36,
+**every** kernel below is inside the affected window — there are no
+"predates the bug" rows here — so a row is `:x:` until its kernel ships
+the fix. `/dev/kvm` exposure and nested-virt defaults change *who* can
+reach the bug, not whether the kernel is fixed; they are recorded in
+prose.
 
-| Branch | Status | First fixed | Current | Notes |
-|---|---|---|---|---|
-| Linus mainline | :white_check_mark: Carries `81ccda30b4e8` | v7.2-rc1 | v7.2-rc4 | |
-| 7.1.x | :white_check_mark: Carries the backport | 7.1.3 | 7.1.5 | |
-| 7.0.x | :x: Not backported | — | 7.0.14 (EOL) | in window; end of life without the fix |
-| 6.18.x | :white_check_mark: Carries the backport | 6.18.38 | 6.18.40 | LTS |
-| 6.12.x | :white_check_mark: Carries the backport | 6.12.95 | 6.12.97 | LTS |
-| 6.6.x | :white_check_mark: Carries the backport | 6.6.144 | 6.6.145 | LTS |
-| 6.1.x | :white_check_mark: Carries the backport | 6.1.177 | 6.1.178 | LTS |
-| 5.15.x | :x: Not backported | — | 5.15.212 | LTS; in window; no backport yet |
-| 5.10.x | :x: Not backported | — | 5.10.261 | LTS; in window; no backport yet |
+The first group tracks the upstream kernel itself; the rest are a
+focused set of x86-64 distributions (other EL10-family systems — RHEL
+10, CentOS Stream 10, Oracle Linux 10, CloudLinux OS 10 — and other
+systems named in the disclosures appear only in prose). *Current
+kernel* is the latest version observed in the row's user-facing
+channel; *First fixed* is the first release or build carrying the fix,
+and *Fixed since* the date it first held (both stay `—` while a row is
+vulnerable).
+
+| Distribution | Release | Current kernel | First fixed | Fixed since | Status |
+|---|---|---|---|---|---|
+| Linux kernel | mainline | 7.2-rc4 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
+| Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
+| Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — end of life at 7.0.14 without the fix |
+| Linux kernel | 6.18.x | 6.18.40 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.12.x | 6.12.97 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.6.x | 6.6.145 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.1.x | 6.1.178 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 5.15.x | 5.15.212 | — | — | :x: Vulnerable — LTS, no backport yet |
+| Linux kernel | 5.10.x | 5.10.261 | — | — | :x: Vulnerable — LTS, no backport yet |
+| Debian | sid (unstable) | 7.1.4-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
+| Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
+| Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — via `trixie-security` (DSA-6381-1) |
+| Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — via `bookworm-security` |
+| Debian | 11 (bullseye, LTS) | 5.10.259-1 | — | — | :x: Vulnerable — 5.10.y not backported upstream |
+| Debian | 11 (linux-6.1 opt-in) | 6.1.176-1~deb11u1 | — | — | :x: Vulnerable — 6.1.176 predates the 6.1.177 fix |
+| Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 9 (6.14 opt-in) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
+| Proxmox VE | 9 (6.17 opt-in) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
+| Proxmox VE | 8 (6.8 default) | 6.8.12-37-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 8 (6.11 opt-in) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
+| Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
+| NixOS | Unstable | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | 26.05 | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| Rocky Linux | 10 | 6.12.0-211.33.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
+| Rocky Linux | 9 | 5.14.0-687.25.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
+| Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
+| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
+| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
+| Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1969 |
+| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
+| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
+| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
+{.distros}
+
+### Linux kernel
+
+The fix reached Linus as **v7.2-rc1** and the kernel CNA
+(CVE-2026-53359) backported it across the maintained stable lines on
+2026-07-04. 7.0.y reached end of life at 7.0.14 without the backport.
+The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the bug — the fix
+uses `sp->gfns[]` on those kernels — but have **not** received a
+backport as of this writing.
 
 When verifying a tree directly, the fixed function is
-`kvm_mmu_get_child_sp()` in `arch/x86/kvm/mmu/mmu.c`; the fix adds a role
-comparison before reusing an existing child shadow page.
-
-## Distribution status
-
-The deciding fact per release is whether the **kernel** carries the
-[`81ccda30b4e8`][fix] backport. Because the bug dates to v2.6.36, **every**
-current distro kernel is inside the affected window — there are no
-"predates the bug" rows here — so a release is `:x:` until it ships the
-fix. `/dev/kvm` exposure and nested-virt defaults change *who* can reach
-the bug, not whether the kernel is fixed; they are recorded in prose.
-*Fixed since* records the date the kernel fix first lands in that release.
-
-The rows below track a focused set of x86-64 distributions. Other EL10
--family systems (RHEL 10, CentOS Stream 10, Oracle Linux 10, CloudLinux
-OS 10) beyond the Rocky/AlmaLinux row, and other systems named in the
-disclosures, appear only in prose where relevant.
-
-| Distribution | Release | Kernel | Fixed since | Status |
-|---|---|---|---|---|
-| Debian | sid (unstable) | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
-| Debian | forky (testing) | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
-| Debian | 13 (trixie) | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed |
-| Debian | 12 (bookworm) | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed |
-| Debian | 11 (bullseye, LTS) | 5.10.223-1 | — | :x: Vulnerable — 5.10.y not backported upstream |
-| Proxmox VE | 9 | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
-| Proxmox VE | 8 | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
-| NixOS | Unstable | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| NixOS | 26.05 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| Rocky Linux | 10 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36956) |
-| Rocky Linux | 9 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed (RLSA rebuild of RHSA-2026:36957) |
-| Rocky Linux | 8 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed (RLSA-2026:39179) |
-| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed (ALAS2023-2026-2001) |
-| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1970) |
-| Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed (ALAS2023-2026-1969) |
-| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
-| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
-| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
-{.distros}
+`kvm_mmu_get_child_sp()` in `arch/x86/kvm/mmu/mmu.c`; the fix adds a
+role comparison before reusing an existing child shadow page.
 
 ### Debian
 
 Debian's `linux` is affected in every suite (the bug predates all of
-them). **sid** shipped `linux 7.1.3-1`, which tracks upstream 7.1.3 and
-carries the backport — sid is fixed. **forky** (testing) migrated from
-7.0.y to `linux 7.1.3-1`, which carries the backport — forky is fixed.
-**trixie** shipped `linux 6.12.95-1` via `trixie-security` (2026-07-05),
-tracking upstream 6.12.95 which carries the backport — trixie is fixed.
-**bookworm** shipped `linux 6.1.177-1` via `bookworm-security`
-(2026-07-17), carrying the backport — bookworm is fixed. **bullseye**
-(5.10.223-1) has no upstream backport for 5.10.y yet, so it remains
-vulnerable until Debian ships the fix.
-Debian keeps `/dev/kvm` owned `root:kvm` mode `0660`, so the
-unprivileged *local* vector needs `kvm`-group membership there; the
-guest-escape vector is unaffected by that.
+them); the security tracker's CVE-2026-53359 record drove these
+assessments. **bullseye** (LTS) stays exposed on both its kernels: the
+default 5.10.y line has no upstream backport, and the opt-in
+`linux-6.1` package (bookworm's 6.1 kernel rebuilt for bullseye) sits
+at 6.1.176, below the 6.1.177 fix. Debian keeps `/dev/kvm` owned
+`root:kvm` mode `0660`, so the unprivileged *local* vector needs
+`kvm`-group membership there; the guest-escape vector is unaffected by
+that.
 
 ### Proxmox VE
 
 Proxmox ships its own Proxmox-built kernels (`proxmox-kernel-*`), so
-Debian's fix status does not carry over. Proxmox released fixed kernels
-for both supported series on 2026-07-08: `proxmox-kernel-6.8.12-33-pve`
-(PVE 8 default series) and `proxmox-kernel-7.0.14-4-pve` (the PVE 9
-default as of `proxmox-default-kernel` 2.1.0), both now in the
-`pve-no-subscription` repository. The 6.17 series fix
-(`proxmox-kernel-6.17.13-15-pve`) subsequently shipped to
-`pve-no-subscription` as well (advisory PSA-2026-00027-1); PVE 9 systems
-running the 6.17 kernel are now covered. The opt-in
-`proxmox-kernel-6.14` (`bpo12`) series for PVE 8 has not received a
-Januscape cherry-pick; its latest release (`6.14.11-9~bpo12+1`,
-2026-05-15) predates the disclosure, leaving PVE 8 systems using this
-opt-in kernel vulnerable. The opt-in `proxmox-kernel-6.14` (trixie)
-series for PVE 9 is in the same position: latest `6.14.11-9-pve`
-(2026-05-15) carries no Januscape cherry-pick, leaving PVE 9 systems
-on this opt-in kernel vulnerable. Proxmox publishes kernel updates
-to `pve-no-subscription` first; the enterprise repository receives the
-same kernels later. Proxmox VE is x86-only, so it does not appear in the
-[ITScape][itscape] (arm64) tracker.
+Debian's fix status does not carry over. Each PVE release's default
+kernel series (pinned by `proxmox-default-kernel`) and its opt-in
+series get their own rows above: both defaults were fixed on
+2026-07-08, the 6.17 series followed with advisory PSA-2026-00027-1,
+and the opt-in 6.11 and 6.14 series have had no release since before
+the disclosure, so they carry no Januscape cherry-pick. Proxmox
+publishes kernel updates to `pve-no-subscription` first; the enterprise
+repository receives the same kernels later. Proxmox VE is x86-only, so
+it does not appear in the [ITScape][itscape] (arm64) tracker.
 
 ### Rocky Linux / RHEL family
 
 The EL family ships `/dev/kvm` **world-accessible** by default (EL8 and
-later), so on those hosts *any* local user — not just a guest — can reach
-the bug; combined with the guest-escape path this is the higher-exposure
-case. Red Hat shipped RHSA-2026:36957 (RHEL 9, fixed kernel
-`5.14.0-687.24.1.el9_8`) and RHSA-2026:36956 (RHEL 10, fixed kernel
-`6.12.0-211.32.1.el10_2`); Rocky 9 and Rocky 10 have now rebuilt those
-NVRs and are fixed. RHSA-2026:37729 additionally shipped for RHEL 9.4
-Update Services for SAP Solutions (fixed kernel
-`5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
-(fixed kernel `5.14.0-570.127.1.el9_6`). RHSA-2026:39083 shipped for
-RHEL 8 on 2026-07-14 (fixed kernel `4.18.0-553.143.1.el8_10`); AlmaLinux 8
-rebuilt as ALSA-2026:39083. RHSA-2026:39082 additionally shipped for RHEL 8
-NFV on 2026-07-14 (fixed real-time kernel
-`4.18.0-553.143.1.rt7.484.el8_10`). Rocky 8 rebuilt as RLSA-2026:39179 (kernel
-`4.18.0-553.144.1.el8_10`, issued 2026-07-15); this build supersedes
-553.143.1 and carries the backport. RHSA-2026:40082 additionally shipped for
-RHEL 9.2 Update Services for SAP Solutions (fixed kernel
-`5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for RHEL 10.0 EUS (fixed
-kernel `6.12.0-55.88.1.el10_0`). RHSA-2026:39983 additionally shipped for
-RHEL 9.2 E4S NFV on 2026-07-15 (fixed real-time kernel
-`5.14.0-284.181.1.rt14.466.el9_2`). RHSA-2026:41229 additionally shipped for
-RHEL 8.8 Telecommunications Update Service and Update Services for SAP
-Solutions on 2026-07-17 (fixed kernel `4.18.0-477.154.1.el8_8`). Oracle
-Linux 10 and CloudLinux OS 10 are expected to track the RHEL fixes.
+later), so on those hosts *any* local user — not just a guest — can
+reach the bug; combined with the guest-escape path this is the
+higher-exposure case. RHEL-family kernels carry security backports
+without moving their upstream base version, so the version string alone
+cannot confirm a fix — the signal is an erratum. The fix flowed RHEL →
+AlmaLinux → Rocky:
+
+- **Standard `kernel`, EL10 / EL9** — Red Hat shipped
+  **RHSA-2026:36956** (RHEL 10, kernel `6.12.0-211.32.1.el10_2`) and
+  **RHSA-2026:36957** (RHEL 9, kernel `5.14.0-687.24.1.el9_8`);
+  AlmaLinux rebuilt both on 2026-07-10, and Rocky 10 / Rocky 9 rebuilt
+  the same NVRs (table above).
+- **Standard `kernel`, EL8** — Red Hat shipped **RHSA-2026:39083**
+  (2026-07-14, kernel `4.18.0-553.143.1.el8_10`); AlmaLinux 8 rebuilt
+  it as **ALSA-2026:39083**. Rocky 8 shipped the superseding cumulative
+  `4.18.0-553.144.1.el8_10` as **RLSA-2026:39179** (2026-07-15), which
+  carries the backport.
+- **Real-time kernels** (no table rows — a niche variant) —
+  **RHSA-2026:39983** (RHEL 9.2 E4S NFV, `kernel-rt
+  5.14.0-284.181.1.rt14.466.el9_2`, 2026-07-15) and **RHSA-2026:39082**
+  (RHEL 8 NFV, `kernel-rt 4.18.0-553.143.1.rt7.484.el8_10`,
+  2026-07-14).
+- **EUS / E4S / TUS streams** (no table rows — the Rocky rows track the
+  main RHEL releases) — **RHSA-2026:39371** (RHEL 10.0 EUS,
+  `6.12.0-55.88.1.el10_0`), **RHSA-2026:38902** (RHEL 9.6 EUS,
+  `5.14.0-570.127.1.el9_6`), **RHSA-2026:37729** (RHEL 9.4 SAP US,
+  `5.14.0-427.137.1.el9_4`), **RHSA-2026:40082** (RHEL 9.2 SAP US,
+  `5.14.0-284.181.1.el9_2`), and **RHSA-2026:41229** (RHEL 8.8
+  TUS / SAP US, `4.18.0-477.154.1.el8_8`, 2026-07-17).
+
+Oracle Linux 10 and CloudLinux OS 10 are expected to track the RHEL
+fixes.
 
 ### Amazon Linux
 
-All three AL2023 kernel streams have now received fixes. Amazon shipped
-ALAS2023-2026-1969 (2026-07-20) for kernel6.18, fixing CVE-2026-53359 in
-`kernel6.18-6.18.38-73.137.amzn2023`; upstream 6.18.38 carries the
-backport. Amazon shipped ALAS2023-2026-1970 (2026-07-20) for kernel6.12,
-fixing CVE-2026-53359 via a cherry-pick into
-`kernel6.12-6.12.94-123.190.amzn2023`. Amazon shipped ALAS2023-2026-2001
-(2026-07-24) for the **default 6.1 stream** (`kernel`), fixing
-CVE-2026-53359 via a cherry-pick into `kernel-6.1.176-221.367.amzn2023`.
-**AL2**, however, reached end of support on **2026-06-30**: AWS no longer
-provides security updates or bug fixes for AL2 core packages, so its
-three streams (4.14, plus 5.10 / 5.15 via `amazon-linux-extras`) are not
-expected to ever receive a fix — the exit for an AL2 KVM host is
-migrating to AL2023 or another patched distribution.
+Each Amazon kernel stream is its own row above; status is verified from
+the repodata `updateinfo.xml` (the per-CVE ALAS pages are JS-rendered
+and don't fetch headlessly). The default 6.1 and kernel6.12 fixes are
+Amazon cherry-picks — their fixed builds sit below the upstream
+first-fixed releases — while kernel6.18's fixed build tracks upstream
+6.18.38. **AL2** reached end of support on **2026-06-30** with no ALAS
+ever issued for this CVE for any of its three streams (4.14, plus
+5.10 / 5.15 via `amazon-linux-extras`) — AWS no longer provides
+security updates or bug fixes for AL2 core packages, so no fix is
+expected; the exit for an AL2 KVM host is migrating to AL2023 (or
+another patched distribution).
 
 ## Detection
 
 **Is the running kernel in the affected window and missing the fix?**
-Compare the running kernel against the *Upstream fixed versions* table and
-your distro row above:
+Compare the running kernel against the *Patch status* table above — the
+*Linux kernel* rows for the upstream point releases, and your
+distribution's row:
 
 ```bash
 uname -r
@@ -314,8 +315,8 @@ until patched.
   and shared multi-user hosts are directly in scope.
 - **Intel and AMD both:** unlike many KVM escapes this is demonstrated on
   both vendors; there is no "AMD is safe" caveat.
-- **Backports available (CVE-2026-53359):** the fix has landed in 6.1.177,
-  6.6.144, 6.12.95, 6.18.38, and 7.1.3, but distro kernels that have not
+- **Backports available (CVE-2026-53359):** the fix has landed in 7.1.3,
+  6.18.38, 6.12.95, 6.6.144, and 6.1.177, but distro kernels that have not
   yet adopted one of those releases remain vulnerable. Check the
   distribution row for your kernel.
 
@@ -332,7 +333,8 @@ until patched.
   partial fix `0cb2af2ea66a` closed only the GFN-mismatch variant.
 - **CVE-2026-53359** assigned by the kernel CNA (confirmed via `vulns.git`
   `origin/master`; record keys on `81ccda30b4e8`). The `.dyad` gives the
-  per-branch fixed versions used in the *Upstream fixed versions* table.
+  per-branch fixed versions used in the `Linux kernel` rows of the
+  *Patch status* table.
 - **Stable backports landed** (confirmed by SHA-reference grep against
   `~/src/linux/stable`): 6.1.177 (`b1337aae5e19`), 6.6.144
   (`9291654d69e0`), 6.12.95 (`2ad3afa40ac6`), 6.18.38 (`5e470998a23e`),
@@ -354,8 +356,11 @@ until patched.
   `trixie-security`, first seen 2026-07-05), and oldstable (bookworm)
   `6.1.177-1` (via `bookworm-security`, first seen in snapshot
   2026-07-17; Debian security tracker now resolved) all carry the
-  backport → fixed. Oldoldstable (bullseye) `5.10.223-1` (5.10.y
-  unpatched upstream) remains vulnerable.
+  backport → fixed. Oldoldstable (bullseye) remains vulnerable on both
+  its kernels: `bullseye-security` ships `5.10.259-1` (5.10.y unpatched
+  upstream), and the opt-in `linux-6.1` package (`6.1.176-1~deb11u1`)
+  tracks bookworm's `6.1.176-1`, which the tracker marks vulnerable —
+  it predates the 6.1.177 fix.
 - **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
   in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
   default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
@@ -368,7 +373,9 @@ until patched.
   cherry-pick → PVE 8 systems on this opt-in remain `:x:`. Opt-in 6.14
   trixie series for PVE 9 (via `origin/trixie-6.14` changelog): latest
   `6.14.11-9-pve` (2026-05-15) carries no Januscape cherry-pick → PVE 9
-  systems on this opt-in also remain `:x:`.
+  systems on this opt-in also remain `:x:`. Opt-in 6.11 series for PVE 8
+  (via `origin/bookworm-6.11` changelog): latest `6.11.11-2` (2025-03-16)
+  predates the disclosure, no cherry-pick → `:x:`.
 - **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
   (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
   `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport

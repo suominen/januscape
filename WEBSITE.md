@@ -60,11 +60,19 @@ References table.  ITScape lives at `~/src/itscape` /
   unlike ipv6_frag_escape's `init_on_alloc` — they do **not** downgrade a
   verdict (both vectors are full compromises, so affected-unpatched is
   `:x:`).
-- **Distribution status** uses a single **combined table** placed
-  immediately under the heading (`Distribution | Release | Kernel | Fixed
-  since | Status`), with per-distro `###` headings retained only where
-  there is an audience-relevant note.  This follows the combined-table +
-  sticky "Fixed since" layout of the ipv6_frag_escape / cifswitch trackers.
+- **Patch status** (renamed 2026-07-25; seeded as *Distribution status*
+  plus a separate *Upstream fixed versions* table) uses a single
+  **combined table** for upstream and distros (`Distribution | Release |
+  Current kernel | First fixed | Fixed since | Status`): the upstream
+  kernel is the first `Linux kernel` group; opt-in kernels (bullseye
+  `linux-6.1`, PVE opt-in series) are their own rows, while the niche EL
+  `kernel-rt` variant stays prose-only; per-distro `###` headings are
+  retained only where there is an audience-relevant note.  *Current
+  kernel* is live; *First fixed* / *Fixed since* are sticky.  In the
+  browser the Distribution column renders as full-width group heading
+  rows, and the column header and group headings are sticky.  This
+  adopts the merged-table layout piloted in ghostlock and folded into
+  `~/src/cve-tracker-template`.
 - Because the bug dates to **v2.6.36**, every tracked x86 kernel is
   in-window — there are **no** "not affected" rows here (contrast ITScape,
   whose 6.10 origin exempts older kernels).  Rows seed `:x:` unless a
@@ -133,10 +141,14 @@ kernel clone was switched from the netdev `net` tree to the KVM tree
 - **rsync `--delete`** removes server-side files not present in the build
   output.  Don't store unrelated content under `htdocs/januscape/`.
 - **Client-side table tweaks.** `layouts/partials/extend_footer.html`
-  rewrites tables in the browser: it collapses consecutive duplicate
-  first-column cells via `rowSpan` and tags status-emoji cells so
-  `custom.css` can hang-indent them.  With JavaScript disabled both tweaks
-  are skipped — the table still renders correctly, just un-compacted.
+  rewrites tables in the browser: in the `.distros` table it replaces
+  the Distribution column with full-width group heading rows (one per
+  distribution; Markdown can't express colspan, so the source keeps a
+  plain column); other tables get consecutive duplicate first-column
+  cells collapsed via `rowSpan`; status-emoji cells are tagged so
+  `custom.css` can hang-indent them.  With JavaScript disabled the
+  tweaks are skipped — the table still renders correctly, with the
+  Distribution column visible and repeated.
 
 ## Social banner
 
