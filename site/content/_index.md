@@ -98,7 +98,7 @@ vulnerable).
 |---|---|---|---|---|---|
 | Linux kernel | mainline | 7.2-rc4 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
 | Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
-| Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — end of life at 7.0.14 without the fix |
+| Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
 | Linux kernel | 6.18.x | 6.18.40 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.12.x | 6.12.97 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.6.x | 6.6.145 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
@@ -322,9 +322,15 @@ until patched.
 
 ## Verification log
 
+Every verdict in the table above is backed by a checkable source. This
+log records the provenance — the advisory, repository index, or git
+reference that established each fact — so any row can be audited or
+reproduced. Most readers never need it.
+
 *Last verified 2026-07-25.*
 
-### Upstream
+{{< details summary="Full verification log" >}}
+#### Upstream
 
 - The fix is `81ccda30b4e8` (*KVM: x86: Fix shadow paging use-after-free
   due to unexpected role*), first released in **v7.2-rc1**. It compares the
@@ -335,92 +341,95 @@ until patched.
   `origin/master`; record keys on `81ccda30b4e8`). The `.dyad` gives the
   per-branch fixed versions used in the `Linux kernel` rows of the
   *Patch status* table.
-- **Stable backports landed** (confirmed by SHA-reference grep against
-  `~/src/linux/stable`): 6.1.177 (`b1337aae5e19`), 6.6.144
-  (`9291654d69e0`), 6.12.95 (`2ad3afa40ac6`), 6.18.38 (`5e470998a23e`),
-  and 7.1.3 (`1ae7d5a6db6c`). 7.0.y is EOL at 7.0.14 without the fix;
-  5.15.y and 5.10.y are in-window and not yet backported.
+- **Stable backports** (confirmed by SHA-reference grep against
+  `~/src/linux/stable`):
+  - Landed in 7.1.3 (`1ae7d5a6db6c`), 6.18.38 (`5e470998a23e`), 6.12.95
+    (`2ad3afa40ac6`), 6.6.144 (`9291654d69e0`), and 6.1.177
+    (`b1337aae5e19`).
+  - 7.0.y is EOL at 7.0.14 without the fix; 5.15.y and 5.10.y are
+    in-window and not yet backported.
 
-### Scoring
+#### Scoring
 
 - Red Hat CNA assigned **CVSSv3 7.8 Important**
   (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H, verified); NVD
   status still "Received" (no NVD score yet). EPSS 0.18 % (7th
   percentile, via api.first.org). Not in CISA KEV.
 
-### Distributions
+#### Distributions
 
 - **Debian** (via Debian security tracker JSON + snapshot.debian.org):
-  unstable `7.1.3-1`, testing (forky) `7.1.3-1` (first seen in snapshot
-  2026-07-04), stable (trixie) `6.12.95-1` (DSA-6381-1, via
-  `trixie-security`, first seen 2026-07-05), and oldstable (bookworm)
-  `6.1.177-1` (via `bookworm-security`, first seen in snapshot
-  2026-07-17; Debian security tracker now resolved) all carry the
-  backport → fixed. Oldoldstable (bullseye) remains vulnerable on both
-  its kernels: `bullseye-security` ships `5.10.259-1` (5.10.y unpatched
-  upstream), and the opt-in `linux-6.1` package (`6.1.176-1~deb11u1`)
-  tracks bookworm's `6.1.176-1`, which the tracker marks vulnerable —
-  it predates the 6.1.177 fix.
-- **Proxmox VE**: Proxmox shipped fixed kernels on 2026-07-08 (confirmed
-  in the `pve-no-subscription` repo via the Proxmox forum thread). PVE 8
-  default kernel `proxmox-kernel-6.8.12-33-pve` and PVE 9 default kernel
-  `proxmox-kernel-7.0.14-4-pve` (the default since `proxmox-default-kernel`
-  2.1.0) both carry the backport → `:white_check_mark:`. The 6.17 series fix
-  `proxmox-kernel-6.17.13-15-pve` subsequently landed in
-  `pve-no-subscription` (advisory PSA-2026-00027-1); confirmed in Packages.gz.
-  Opt-in 6.14 `bpo12` series for PVE 8 (via `origin/bookworm-6.14`
-  changelog): latest `6.14.11-9~bpo12+1` (2026-05-15) carries no Januscape
-  cherry-pick → PVE 8 systems on this opt-in remain `:x:`. Opt-in 6.14
-  trixie series for PVE 9 (via `origin/trixie-6.14` changelog): latest
-  `6.14.11-9-pve` (2026-05-15) carries no Januscape cherry-pick → PVE 9
-  systems on this opt-in also remain `:x:`. Opt-in 6.11 series for PVE 8
-  (via `origin/bookworm-6.11` changelog): latest `6.11.11-2` (2025-03-16)
-  predates the disclosure, no cherry-pick → `:x:`.
-- **NixOS** (via the local nixpkgs clone): the default `linuxPackages`
-  (`linux_6_18`) is `6.18.38` on both nixos-unstable and nixos-26.05, and
-  `linuxPackages_latest` (`linux_7_1`) is `7.1.3` — both carry the backport
-  → fixed.
-- **Rocky / RHEL family**: RHSA-2026:36957 (RHEL 9, fixed NVR
-  `5.14.0-687.24.1.el9_8`) and RHSA-2026:36956 (RHEL 10, fixed NVR
-  `6.12.0-211.32.1.el10_2`) published (via Red Hat security API).
-  AlmaLinux rebuilt both on 2026-07-10 (via errata.almalinux.org):
-  ALSA-2026:36957 (AL9, `5.14.0-687.24.1.el9_8`) and ALSA-2026:36956
-  (AL10, `6.12.0-211.32.1.el10_2`). Rocky 9 BaseOS ships
-  `5.14.0-687.24.1.el9_8` (confirmed via Rocky 9 BaseOS repodata) →
-  `:white_check_mark:`. Rocky 10 BaseOS ships `6.12.0-211.32.1.el10_2`
-  (confirmed via Rocky 10 BaseOS repodata) → `:white_check_mark:`.
-  RHSA-2026:37729 additionally shipped for RHEL 9.4 EUS
-  (`5.14.0-427.137.1.el9_4`), and RHSA-2026:38902 for RHEL 9.6 EUS
-  (`5.14.0-570.127.1.el9_6`); neither reflected in the Rocky 9 row,
-  which tracks the main RHEL 9.x release. RHSA-2026:40082 shipped for
-  RHEL 9.2 E4S (`5.14.0-284.181.1.el9_2`), and RHSA-2026:39371 for
-  RHEL 10.0 EUS (`6.12.0-55.88.1.el10_0`) (via Red Hat security API).
-  RHSA-2026:39983 shipped for RHEL 9.2 E4S NFV (2026-07-15; fixed
-  real-time kernel `5.14.0-284.181.1.rt14.466.el9_2`; via Red Hat
-  security API). RHSA-2026:41229 shipped for RHEL 8.8 TUS and SAP
-  Solutions (`4.18.0-477.154.1.el8_8`, 2026-07-17; via Red Hat security
-  API).
-  RHSA-2026:39083 shipped for RHEL 8 on 2026-07-14 (fixed NVR
-  `4.18.0-553.143.1.el8_10`, via Red Hat security API); AlmaLinux 8
-  rebuilt as ALSA-2026:39083 (via errata.almalinux.org).
-  RHSA-2026:39082 additionally shipped for RHEL 8 NFV on 2026-07-14
-  (fixed real-time kernel NVR `4.18.0-553.143.1.rt7.484.el8_10`, via
-  Red Hat security API). Rocky 8 BaseOS
-  ships `4.18.0-553.144.1.el8_10` via RLSA-2026:39179 (confirmed via
-  Rocky 8 BaseOS repodata + updateinfo); this build supersedes 553.143.1
-  and carries the backport → `:white_check_mark:`.
-- **Amazon Linux** (via repodata `updateinfo.xml.gz`): ALAS2023-2026-1969
-  (issued 2026-07-20) fixes CVE-2026-53359 in `kernel6.18-6.18.38-73.137`
-  (upstream 6.18.38 carries the backport) → AL2023 kernel6.18 now
-  `:white_check_mark:`. ALAS2023-2026-1970 (issued 2026-07-20) fixes
-  CVE-2026-53359 via cherry-pick in `kernel6.12-6.12.94-123.190` → AL2023
-  kernel6.12 now `:white_check_mark:`. ALAS2023-2026-2001 (issued
-  2026-07-24) fixes CVE-2026-53359 via cherry-pick in
-  `kernel-6.1.176-221.367` → AL2023 default kernel (6.1) now
-  `:white_check_mark:`. **AL2 reached end of support on 2026-06-30** (per
-  the AWS AL2 FAQ; confirmed against endoflife.date) without an ALAS for
-  this CVE — all three of its streams remain permanently vulnerable; AL2
-  is covered collectively in prose, not tracked as rows.
+  - unstable/sid — `7.1.3-1` carries the backport — fixed.
+  - testing/forky — `7.1.3-1` (first seen in snapshot 2026-07-04) —
+    fixed.
+  - stable/trixie — `6.12.95-1` (DSA-6381-1, via `trixie-security`,
+    first seen 2026-07-05) — fixed.
+  - oldstable/bookworm — `6.1.177-1` (via `bookworm-security`, first
+    seen in snapshot 2026-07-17; security tracker resolved) — fixed.
+  - LTS/bullseye — vulnerable on both its kernels: `bullseye-security`
+    ships `5.10.259-1` (5.10.y unpatched upstream), and the opt-in
+    `linux-6.1` package (`6.1.176-1~deb11u1`) tracks bookworm's
+    `6.1.176-1`, which the tracker marks vulnerable — it predates the
+    6.1.177 fix.
+- **Proxmox VE** (fixed kernels confirmed in the `pve-no-subscription`
+  repo via the Proxmox forum thread and Packages.gz; opt-in series via
+  the pve-kernel changelogs):
+  - PVE 9 default — `proxmox-kernel-7.0.14-4-pve` (the default since
+    `proxmox-default-kernel` 2.1.0) carries the backport, shipped
+    2026-07-08 — fixed.
+  - PVE 9 opt-in 6.14 (via `origin/trixie-6.14` changelog) — latest
+    `6.14.11-9-pve` (2026-05-15) carries no Januscape cherry-pick —
+    vulnerable.
+  - PVE 9 opt-in 6.17 — the fix `proxmox-kernel-6.17.13-15-pve` landed
+    in `pve-no-subscription` (advisory PSA-2026-00027-1) — fixed.
+  - PVE 8 default — `proxmox-kernel-6.8.12-33-pve` carries the
+    backport, shipped 2026-07-08 — fixed.
+  - PVE 8 opt-in 6.11 (via `origin/bookworm-6.11` changelog) — latest
+    `6.11.11-2` (2025-03-16) predates the disclosure, no cherry-pick —
+    vulnerable.
+  - PVE 8 opt-in 6.14 `bpo12` (via `origin/bookworm-6.14` changelog) —
+    latest `6.14.11-9~bpo12+1` (2026-05-15) carries no Januscape
+    cherry-pick — vulnerable.
+- **NixOS** (via the local nixpkgs clone):
+  - The default `linuxPackages` (`linux_6_18`) is `6.18.39` on both
+    nixos-unstable and nixos-26.05 — both carry the backport — fixed.
+  - `linuxPackages_latest` (`linux_7_1`) is `7.1.4`.
+- **Rocky / RHEL family** (via the Red Hat security data API,
+  errata.almalinux.org, and Rocky BaseOS repodata):
+  - EL10 / EL9 standard `kernel` — RHSA-2026:36956 (RHEL 10, fixed NVR
+    `6.12.0-211.32.1.el10_2`) and RHSA-2026:36957 (RHEL 9, fixed NVR
+    `5.14.0-687.24.1.el9_8`); AlmaLinux rebuilt both on 2026-07-10
+    (ALSA-2026:36956 / ALSA-2026:36957); Rocky 10 and Rocky 9 BaseOS
+    ship the fixed NVRs (confirmed via repodata) — fixed.
+  - EL8 standard `kernel` — RHSA-2026:39083 shipped 2026-07-14 (fixed
+    NVR `4.18.0-553.143.1.el8_10`); AlmaLinux 8 rebuilt as
+    ALSA-2026:39083. Rocky 8 BaseOS ships `4.18.0-553.144.1.el8_10`
+    via RLSA-2026:39179 (confirmed via repodata + updateinfo) — the
+    build supersedes 553.143.1 and carries the backport — fixed.
+  - Real-time kernels — RHSA-2026:39983 (RHEL 9.2 E4S NFV, 2026-07-15,
+    `5.14.0-284.181.1.rt14.466.el9_2`) and RHSA-2026:39082 (RHEL 8
+    NFV, 2026-07-14, `4.18.0-553.143.1.rt7.484.el8_10`).
+  - EUS / E4S / TUS advisories (not reflected in the Rocky rows, which
+    track the main RHEL releases): RHSA-2026:39371 (RHEL 10.0 EUS,
+    `6.12.0-55.88.1.el10_0`), RHSA-2026:38902 (RHEL 9.6 EUS,
+    `5.14.0-570.127.1.el9_6`), RHSA-2026:37729 (RHEL 9.4 EUS,
+    `5.14.0-427.137.1.el9_4`), RHSA-2026:40082 (RHEL 9.2 E4S,
+    `5.14.0-284.181.1.el9_2`), and RHSA-2026:41229 (RHEL 8.8 TUS and
+    SAP Solutions, `4.18.0-477.154.1.el8_8`, 2026-07-17).
+- **Amazon Linux** (via repodata `updateinfo.xml.gz`):
+  - AL2023 default `kernel` (6.1) — ALAS2023-2026-2001 (issued
+    2026-07-24) fixes CVE-2026-53359 via cherry-pick in
+    `kernel-6.1.176-221.367` — fixed.
+  - AL2023 `kernel6.12` — ALAS2023-2026-1970 (issued 2026-07-20) fixes
+    it via cherry-pick in `kernel6.12-6.12.94-123.190` — fixed.
+  - AL2023 `kernel6.18` — ALAS2023-2026-1969 (issued 2026-07-20) fixes
+    it in `kernel6.18-6.18.38-73.137`; upstream 6.18.38 carries the
+    backport — fixed.
+  - AL2 — reached end of support on 2026-06-30 (per the AWS AL2 FAQ;
+    confirmed against endoflife.date) without an ALAS for this CVE —
+    all three of its streams remain permanently vulnerable; AL2 is
+    covered collectively in prose, not tracked as rows.
+{{< /details >}}
 
 ## References
 
