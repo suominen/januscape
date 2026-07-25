@@ -125,9 +125,6 @@ vulnerable).
 | Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
 | Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1969 |
-| Amazon Linux | 2 (kernel 4.14) | 4.14.355-284.737 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
-| Amazon Linux | 2 (kernel-5.10) | 5.10.259-258.1043 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
-| Amazon Linux | 2 (kernel-5.15) | 5.15.210-148.245 | — | — | :x: Vulnerable — no fix expected (AL2 EOL 2026-06-30) |
 {.distros}
 
 ### Linux kernel
@@ -206,17 +203,20 @@ fixes.
 
 ### Amazon Linux
 
-Each Amazon kernel stream is its own row above; status is verified from
-the repodata `updateinfo.xml` (the per-CVE ALAS pages are JS-rendered
-and don't fetch headlessly). The default 6.1 and kernel6.12 fixes are
-Amazon cherry-picks — their fixed builds sit below the upstream
-first-fixed releases — while kernel6.18's fixed build tracks upstream
-6.18.38. **AL2** reached end of support on **2026-06-30** with no ALAS
-ever issued for this CVE for any of its three streams (4.14, plus
-5.10 / 5.15 via `amazon-linux-extras`) — AWS no longer provides
-security updates or bug fixes for AL2 core packages, so no fix is
-expected; the exit for an AL2 KVM host is migrating to AL2023 (or
-another patched distribution).
+Each **AL2023** kernel stream is its own row above; status is verified
+from the repodata `updateinfo.xml` (the per-CVE ALAS pages are
+JS-rendered and don't fetch headlessly). The default 6.1 and kernel6.12
+fixes are Amazon cherry-picks — their fixed builds sit below the
+upstream first-fixed releases — while kernel6.18's fixed build tracks
+upstream 6.18.38.
+
+**AL2** (amzn2) is not tracked here: it reached end of support on
+**2026-06-30** — before this tracker existed — with no ALAS ever issued
+for this CVE, and AWS no longer provides security updates or bug fixes
+for AL2 core packages. All three of its kernel streams (4.14, plus
+5.10 / 5.15 via `amazon-linux-extras`) are in-window and permanently
+vulnerable, and no fix is expected. The exit for an AL2 KVM host is
+migrating to AL2023 (or another patched distribution).
 
 ## Detection
 
@@ -419,7 +419,8 @@ until patched.
   `kernel-6.1.176-221.367` → AL2023 default kernel (6.1) now
   `:white_check_mark:`. **AL2 reached end of support on 2026-06-30** (per
   the AWS AL2 FAQ; confirmed against endoflife.date) without an ALAS for
-  this CVE — its three rows are marked "no fix expected" and will not flip.
+  this CVE — all three of its streams remain permanently vulnerable; AL2
+  is covered collectively in prose, not tracked as rows.
 
 ## References
 

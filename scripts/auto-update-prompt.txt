@@ -96,9 +96,9 @@ thing you may leave behind is the edited tracker (and its commit).
    affected" rows on x86. Rows exist per kernel stream, not just per
    release: Debian suites' default kernel plus bullseye's opt-in
    linux-6.1; PVE default and opt-in proxmox-kernel series; Rocky's
-   standard kernel (EL kernel-rt is a prose-only note); every Amazon
-   stream. For each row, re-pull the KERNEL version and check for the
-   backport:
+   standard kernel (EL kernel-rt is a prose-only note); every AL2023
+   stream (AL2 is EOL — prose-only, no rows, no repodata polls). For
+   each row, re-pull the KERNEL version and check for the backport:
       - Debian: the SECURITY TRACKER is authoritative for status, not a
         madison version compare — the base suite lags the -security upload,
         and Debian backports below the upstream first-fixed release. WebFetch
