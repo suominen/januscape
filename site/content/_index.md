@@ -112,11 +112,11 @@ vulnerable).
 | Debian | 11 (bullseye, LTS) | 5.10.259-1 | 5.10.259-1 | 2026-07-03 | :white_check_mark: Fixed |
 | Debian | 11 (linux-6.1 opt-in) | 6.1.176-1~deb11u1 | — | — | :x: Vulnerable — 6.1.176 predates the 6.1.177 fix |
 | Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
-| Proxmox VE | 9 (6.14 opt-in) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
-| Proxmox VE | 9 (6.17 opt-in) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
+| Proxmox VE | 9 (6.17 old) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
+| Proxmox VE | 9 (6.14 old) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.8 default) | 6.8.12-37-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
-| Proxmox VE | 8 (6.11 opt-in) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
+| Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | NixOS | 26.05 | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | Rocky Linux | 10 | 6.12.0-211.37.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
@@ -157,14 +157,25 @@ that.
 
 Proxmox ships its own Proxmox-built kernels (`proxmox-kernel-*`), so
 Debian's fix status does not carry over. Each PVE release's default
-kernel series (pinned by `proxmox-default-kernel`) and its opt-in
-series get their own rows above: both defaults were fixed on
+kernel series (pinned by `proxmox-default-kernel`) and its other
+offered series get their own rows above: both defaults were fixed on
 2026-07-08, the 6.17 series followed with advisory PSA-2026-00027-1,
-and the opt-in 6.11 and 6.14 series have had no release since before
-the disclosure, so they carry no Januscape cherry-pick. Proxmox
+and the 6.11 and 6.14 series have had no release since before the
+disclosure, so they carry no Januscape cherry-pick. Proxmox
 publishes kernel updates to `pve-no-subscription` first; the enterprise
 repository receives the same kernels later. Proxmox VE is x86-only, so
 it does not appear in the [ITScape][itscape] (arm64) tracker.
+
+An *opt-in* series is Proxmox's preview of a likely next default,
+aimed at setups that need newer hardware support; an *old* series is
+one the release has moved past — a superseded default (PVE 9's 6.17
+and 6.14) or an opt-in overtaken by a newer one (PVE 8's 6.11).
+Proxmox discontinues updates for superseded series once a short
+transition tail ends (the 6.17 fix above landed inside that tail),
+and every PVE kernel series is long end-of-life on kernel.org, so a
+fix can only ever arrive as a Proxmox cherry-pick. A vulnerable *old*
+row is therefore unlikely ever to flip — the exit is rebooting into
+the release's current default kernel.
 
 ### Rocky Linux / RHEL family
 
@@ -380,19 +391,24 @@ reproduced. Most readers never need it.
   - PVE 9 default — `proxmox-kernel-7.0.14-4-pve` (the default since
     `proxmox-default-kernel` 2.1.0) carries the backport, shipped
     2026-07-08 — fixed.
-  - PVE 9 opt-in 6.14 (via `origin/trixie-6.14` changelog) — latest
+  - PVE 9 old 6.17 — the fix `proxmox-kernel-6.17.13-15-pve` landed
+    in `pve-no-subscription` (advisory PSA-2026-00027-1) — fixed.
+  - PVE 9 old 6.14 (via `origin/trixie-6.14` changelog) — latest
     `6.14.11-9-pve` (2026-05-15) carries no Januscape cherry-pick —
     vulnerable.
-  - PVE 9 opt-in 6.17 — the fix `proxmox-kernel-6.17.13-15-pve` landed
-    in `pve-no-subscription` (advisory PSA-2026-00027-1) — fixed.
   - PVE 8 default — `proxmox-kernel-6.8.12-33-pve` carries the
     backport, shipped 2026-07-08 — fixed.
-  - PVE 8 opt-in 6.11 (via `origin/bookworm-6.11` changelog) — latest
-    `6.11.11-2` (2025-03-16) predates the disclosure, no cherry-pick —
-    vulnerable.
   - PVE 8 opt-in 6.14 `bpo12` (via `origin/bookworm-6.14` changelog) —
     latest `6.14.11-9~bpo12+1` (2026-05-15) carries no Januscape
     cherry-pick — vulnerable.
+  - PVE 8 old 6.11 (via `origin/bookworm-6.11` changelog) — latest
+    `6.11.11-2` (2025-03-16) predates the disclosure, no cherry-pick —
+    vulnerable.
+  - Series lifecycle (via the Proxmox forum opt-in kernel
+    announcements): an opt-in kernel previews the next default, a
+    superseded series stops receiving updates barring serious issues,
+    and all PVE series are EOL on kernel.org — the basis of the
+    *old* labels and the "unlikely ever to flip" caveat.
 - **NixOS** (via the local nixpkgs clone):
   - The default `linuxPackages` (`linux_6_18`) is `6.18.39` on both
     nixos-unstable and nixos-26.05 — both carry the backport — fixed.

@@ -127,7 +127,9 @@ PSA-2026-00027-1`, `:x: Vulnerable — no cherry-pick`); longer caveats go
 in the `###` prose.  Label NixOS channels in the **Release** column in
 friendly form (`Unstable`, `26.05`).  Row and list ordering: releases
 **descending** within a distribution; within a release the default
-kernel row first, then opt-in/alternate series rows **ascending**.  The
+kernel row first, then live opt-in/alternate series rows **ascending**,
+then superseded (`old`) series rows **descending** — like releases,
+old series are something users are expected to move up from.  The
 same rule applies to version lists in prose.  Rows sharing a
 Distribution value must stay contiguous — the browser transform renders
 each run as one group heading row.  Keep the `{.distros}` block
@@ -152,8 +154,20 @@ so its verdict follows bookworm's *base-suite* status, currently
 vulnerable at 6.1.176 < first-fixed 6.1.177).  An opt-in row's verdict
 never flips the default row's: while `src:linux` is open for a suite in
 the security tracker, that suite's default row stays vulnerable.  The
-same default-plus-variant row pattern applies to Proxmox (default and
-opt-in `proxmox-kernel-*` series).  Niche variants (e.g. the EL
+same default-plus-variant row pattern applies to Proxmox
+(`proxmox-kernel-*` series), with a third Release label: PVE opt-in
+kernels are previews of the next default (per the Proxmox forum
+announcements), so series get superseded — a former default or an
+opt-in overtaken by a newer one is labelled `old` (`9 (6.17 old)`).
+Keep an `old` row (hosts still run it), but expect no more updates for
+it: Proxmox discontinues updates for superseded series after a short
+transition tail, and every PVE series is EOL on kernel.org, so a
+vulnerable `old` row will likely never flip.  Don't add upstream
+`Linux kernel` rows for the PVE series either — all are EOL upstream
+without the fix, so such rows could never flip, and they would sit
+misleadingly against PVE rows whose fixes arrive as cherry-picks; the
+upstream-EOL fact is one sentence in the `### Proxmox VE` prose.
+Niche variants (e.g. the EL
 `kernel-rt` real-time kernel) get **no** row — cover them as a
 reader-facing note in the `### Rocky Linux / RHEL family` prose.
 
@@ -179,8 +193,10 @@ kernel* cell and **nothing else**.
 default series during a release's lifetime (`proxmox-default-kernel`
 changing which `proxmox-kernel-*` it depends on), and a distro can add
 an opt-in series alongside it.  Record a switch in the affected row's
-Release label and prose, add a **new row** for a new opt-in series, and
-update the verification log — **together**, since a log-only update
+Release label and prose, add a **new row** for a new opt-in series,
+relabel the superseded series' row `old` (and re-sort: old rows follow
+the live opt-ins, descending), and update the verification log —
+**together**, since a log-only update
 leaves the tracker self-inconsistent.  A switch can also flip a verdict
 on its own — a newer series may already contain the fix, or a still-EOL
 one may not — so re-derive the verdict rather than carrying the old one
@@ -269,8 +285,8 @@ with a terse bold lead and the method attribution (e.g. `**Debian**
 (via …):`), followed by **one fact per nested sub-bullet** — never run
 multiple facts together into a paragraph-bullet; the nesting is what
 keeps the log readable.  Sub-bullets follow the table's ordering
-conventions (releases descending; default kernel before opt-in series
-ascending).
+conventions (releases descending; within a release the default kernel
+first, live opt-in series ascending, then old series descending).
 
 When you re-verify entries, update the section rather than appending a
 line per re-check.  Bump the `*Last verified <date>.*` line and edit
@@ -573,7 +589,11 @@ git -C ~/src/proxmox/pve-kernel branch -r
 Confirm the branch is the one you meant by checking that its changelog head
 names that series, then read `debian/changelog` and `patches/` from it.  A
 series that PVE has moved off is still a live branch here, so reading a
-stale one reports "no cherry-pick" from a kernel nobody runs.
+stale one reports "no cherry-pick" from a kernel nobody runs.  For an
+`old` row's series, refresh *Current kernel* from the same Packages.gz
+pull as the rest, but only re-read its changelog branch if that package
+version actually moved — Proxmox has stopped updating superseded
+series, so on a routine run there is nothing new to find there.
 
 Do not clone it per run: it is a shared reference like
 `~/src/linux/stable`, and a clone made inside the worktree leaves untracked
