@@ -172,10 +172,10 @@ one the release has moved past — a superseded default (PVE 9's 6.17
 and 6.14) or an opt-in overtaken by a newer one (PVE 8's 6.11).
 Proxmox discontinues updates for superseded series once a short
 transition tail ends (the 6.17 fix above landed inside that tail),
-and every PVE kernel series is long end-of-life on kernel.org, so a
-fix can only ever arrive as a Proxmox cherry-pick. A vulnerable *old*
-row is therefore unlikely ever to flip — the exit is rebooting into
-the release's current default kernel.
+and every such PVE kernel series is long end-of-life on kernel.org,
+so a fix can only ever arrive as a Proxmox cherry-pick. A vulnerable
+*old* row is therefore unlikely ever to flip — the exit is rebooting
+into the release's current default kernel.
 
 ### Rocky Linux / RHEL family
 
@@ -407,7 +407,7 @@ reproduced. Most readers never need it.
   - Series lifecycle (via the Proxmox forum opt-in kernel
     announcements): an opt-in kernel previews the next default, a
     superseded series stops receiving updates barring serious issues,
-    and all PVE series are EOL on kernel.org — the basis of the
+    and every such series is EOL on kernel.org — the basis of the
     *old* labels and the "unlikely ever to flip" caveat.
 - **NixOS** (via the local nixpkgs clone):
   - The default `linuxPackages` (`linux_6_18`) is `6.18.39` on both
