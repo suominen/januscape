@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-25
+lastmod: 2026-07-26
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -109,7 +109,7 @@ vulnerable).
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — via `trixie-security` (DSA-6381-1) |
 | Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — via `bookworm-security` |
-| Debian | 11 (bullseye, LTS) | 5.10.259-1 | — | — | :x: Vulnerable — 5.10.y not backported upstream |
+| Debian | 11 (bullseye, LTS) | 5.10.259-1 | 5.10.259-1 | 2026-07-03 | :white_check_mark: Fixed — via bullseye-security |
 | Debian | 11 (linux-6.1 opt-in) | 6.1.176-1~deb11u1 | — | — | :x: Vulnerable — 6.1.176 predates the 6.1.177 fix |
 | Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 9 (6.14 opt-in) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
@@ -144,10 +144,11 @@ role comparison before reusing an existing child shadow page.
 
 Debian's `linux` is affected in every suite (the bug predates all of
 them); the security tracker's CVE-2026-53359 record drove these
-assessments. **bullseye** (LTS) stays exposed on both its kernels: the
-default 5.10.y line has no upstream backport, and the opt-in
-`linux-6.1` package (bookworm's 6.1 kernel rebuilt for bullseye) sits
-at 6.1.176, below the 6.1.177 fix. Debian keeps `/dev/kvm` owned
+assessments. **bullseye** (LTS) has fixed its default kernel: `5.10.259-1` carries
+a Debian-independent cherry-pick of the fix (the upstream 5.10.y tree
+has not received the backport). The opt-in `linux-6.1` package
+(bookworm's 6.1 kernel rebuilt for bullseye) sits at 6.1.176, below the
+6.1.177 fix, and has had no security update — it remains vulnerable. Debian keeps `/dev/kvm` owned
 `root:kvm` mode `0660`, so the unprivileged *local* vector needs
 `kvm`-group membership there; the guest-escape vector is unaffected by
 that.
@@ -327,7 +328,7 @@ log records the provenance — the advisory, repository index, or git
 reference that established each fact — so any row can be audited or
 reproduced. Most readers never need it.
 
-*Last verified 2026-07-25.*
+*Last verified 2026-07-26.*
 
 {{< details summary="Full verification log" >}}
 #### Upstream
@@ -366,11 +367,13 @@ reproduced. Most readers never need it.
     first seen 2026-07-05) — fixed.
   - oldstable/bookworm — `6.1.177-1` (via `bookworm-security`, first
     seen in snapshot 2026-07-17; security tracker resolved) — fixed.
-  - LTS/bullseye — vulnerable on both its kernels: `bullseye-security`
-    ships `5.10.259-1` (5.10.y unpatched upstream), and the opt-in
-    `linux-6.1` package (`6.1.176-1~deb11u1`) tracks bookworm's
-    `6.1.176-1`, which the tracker marks vulnerable — it predates the
-    6.1.177 fix.
+  - LTS/bullseye default kernel — `5.10.259-1` in `bullseye-security`
+    (first seen snapshot 2026-07-03) carries a Debian cherry-pick of
+    the fix; security tracker status resolved at `5.10.259-1`; upstream
+    5.10.y has not received the backport — fixed via cherry-pick.
+  - LTS/bullseye opt-in `linux-6.1` (`6.1.176-1~deb11u1`) tracks
+    bookworm's base-suite `6.1.176-1`, which predates the 6.1.177 fix;
+    no `bullseye-security` update (madison empty) — vulnerable.
 - **Proxmox VE** (fixed kernels confirmed in the `pve-no-subscription`
   repo via the Proxmox forum thread and Packages.gz; opt-in series via
   the pve-kernel changelogs):
