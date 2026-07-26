@@ -109,8 +109,8 @@ vulnerable).
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
 | Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed |
-| Debian | 11 (bullseye, LTS) | 5.10.259-1 | 5.10.259-1 | 2026-07-03 | :white_check_mark: Fixed |
-| Debian | 11 (linux-6.1 opt-in) | 6.1.176-1~deb11u1 | — | — | :x: Vulnerable — 6.1.176 predates the 6.1.177 fix |
+| Debian | 11 (bullseye, LTS) | 5.10.259-1 | — | — | :x: Vulnerable — no backport in 5.10.x |
+| Debian | 11 (linux-6.1 opt-in) | 6.1.177-1~deb11u1 | 6.1.177-1~deb11u1 | 2026-07-25 | :white_check_mark: Fixed |
 | Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 9 (6.17 old) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
 | Proxmox VE | 9 (6.14 old) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
@@ -144,11 +144,13 @@ role comparison before reusing an existing child shadow page.
 
 Debian's `linux` is affected in every suite (the bug predates all of
 them); the security tracker's CVE-2026-53359 record drove these
-assessments. **bullseye** (LTS) has fixed its default kernel: `5.10.259-1` carries
-a Debian-independent cherry-pick of the fix (the upstream 5.10.y tree
-has not received the backport). The opt-in `linux-6.1` package
-(bookworm's 6.1 kernel rebuilt for bullseye) sits at 6.1.176, below the
-6.1.177 fix, and has had no security update — it remains vulnerable. Debian keeps `/dev/kvm` owned
+assessments. **bullseye** (LTS) default `linux` kernel (`5.10.x` series) has not
+received the fix — upstream 5.10.y carries no backport and Debian has
+not issued an independent cherry-pick; `5.10.259-1` in
+`bullseye-security` remains vulnerable. The opt-in `linux-6.1` package
+(bookworm's 6.1 kernel rebuilt for bullseye) was updated to
+`6.1.177-1~deb11u1` in `bullseye-security` (2026-07-25), carrying the
+fix via the upstream 6.1.177 release. Debian keeps `/dev/kvm` owned
 `root:kvm` mode `0660`, so the unprivileged *local* vector needs
 `kvm`-group membership there; the guest-escape vector is unaffected by
 that.
@@ -379,12 +381,12 @@ reproduced. Most readers never need it.
   - oldstable/bookworm — `6.1.177-1` (via `bookworm-security`, first
     seen in snapshot 2026-07-17; security tracker resolved) — fixed.
   - LTS/bullseye default kernel — `5.10.259-1` in `bullseye-security`
-    (first seen snapshot 2026-07-03) carries a Debian cherry-pick of
-    the fix; security tracker status resolved at `5.10.259-1`; upstream
-    5.10.y has not received the backport — fixed via cherry-pick.
-  - LTS/bullseye opt-in `linux-6.1` (`6.1.176-1~deb11u1`) tracks
-    bookworm's base-suite `6.1.176-1`, which predates the 6.1.177 fix;
-    no `bullseye-security` update (madison empty) — vulnerable.
+    (via Debian security tracker JSON) carries no Januscape
+    cherry-pick; upstream 5.10.y has not received the backport —
+    vulnerable.
+  - LTS/bullseye opt-in `linux-6.1` — updated to
+    `6.1.177-1~deb11u1` in `bullseye-security` (first seen snapshot
+    2026-07-25); 6.1.177 is the first upstream fixed release — fixed.
 - **Proxmox VE** (fixed kernels confirmed in the `pve-no-subscription`
   repo via the Proxmox forum thread and Packages.gz; opt-in series via
   the pve-kernel changelogs):
