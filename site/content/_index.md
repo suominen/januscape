@@ -107,9 +107,9 @@ vulnerable).
 | Linux kernel | 5.10.x | 5.10.261 | — | — | :x: Vulnerable — LTS, no backport yet |
 | Debian | sid (unstable) | 7.1.4-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
-| Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — via `trixie-security` (DSA-6381-1) |
-| Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — via `bookworm-security` |
-| Debian | 11 (bullseye, LTS) | 5.10.259-1 | 5.10.259-1 | 2026-07-03 | :white_check_mark: Fixed — via bullseye-security |
+| Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
+| Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed |
+| Debian | 11 (bullseye, LTS) | 5.10.259-1 | 5.10.259-1 | 2026-07-03 | :white_check_mark: Fixed |
 | Debian | 11 (linux-6.1 opt-in) | 6.1.176-1~deb11u1 | — | — | :x: Vulnerable — 6.1.176 predates the 6.1.177 fix |
 | Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 9 (6.14 opt-in) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
