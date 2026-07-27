@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-26
+lastmod: 2026-07-27
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -25,7 +25,7 @@ cover:
 | Discoverer | Hyunwoo Kim ([`@v4bel`][poc]) |
 | Public disclosure | 2026-07-06 |
 | Public PoC | [V4bel/Januscape][poc] (demonstrates the host-crash path) |
-| KEV / EPSS / CVSS | CVSS 7.8 Important (Red Hat CNA; NVD pending); EPSS 0.18 % (7th pct); not in KEV |
+| KEV / EPSS / CVSS | CVSS 7.8 Important (Red Hat CNA), 8.8 HIGH (NVD CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H); EPSS 0.91 % (56th pct); not in KEV |
 | Related | [ITScape (CVE-2026-46316)][itscape] — the arm64 sibling by the same researcher (KVM/arm64 vGIC-ITS escape). Januscape is x86-only; ITScape is arm64-only |
 
 ## How the exploitation chain works
@@ -96,7 +96,7 @@ vulnerable).
 
 | Distribution | Release | Current kernel | First fixed | Fixed since | Status |
 |---|---|---|---|---|---|
-| Linux kernel | mainline | 7.2-rc4 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
+| Linux kernel | mainline | 7.2-rc5 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
 | Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
 | Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
 | Linux kernel | 6.18.x | 6.18.40 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
@@ -118,7 +118,7 @@ vulnerable).
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| NixOS | 26.05 | 6.18.39 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | 26.05 | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | Rocky Linux | 10 | 6.12.0-211.37.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
 | Rocky Linux | 9 | 5.14.0-687.29.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
 | Rocky Linux | 8 | 4.18.0-553.146.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
@@ -341,7 +341,7 @@ log records the provenance — the advisory, repository index, or git
 reference that established each fact — so any row can be audited or
 reproduced. Most readers never need it.
 
-*Last verified 2026-07-26.*
+*Last verified 2026-07-27.*
 
 {{< details summary="Full verification log" >}}
 #### Upstream
@@ -366,9 +366,10 @@ reproduced. Most readers never need it.
 #### Scoring
 
 - Red Hat CNA assigned **CVSSv3 7.8 Important**
-  (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H, verified); NVD
-  status still "Received" (no NVD score yet). EPSS 0.18 % (7th
-  percentile, via api.first.org). Not in CISA KEV.
+  (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H); NVD published
+  **8.8 HIGH** (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H, via
+  NVD API). EPSS 0.91 % (56th percentile, via api.first.org). Not in
+  CISA KEV.
 
 #### Distributions
 
@@ -412,9 +413,11 @@ reproduced. Most readers never need it.
     and every such series is EOL on kernel.org — the basis of the
     *old* labels and the "unlikely ever to flip" caveat.
 - **NixOS** (via the local nixpkgs clone):
-  - The default `linuxPackages` (`linux_6_18`) is `6.18.39` on both
-    nixos-unstable and nixos-26.05 — both carry the backport — fixed.
-  - `linuxPackages_latest` (`linux_7_1`) is `7.1.4`.
+  - The default `linuxPackages` (`linux_6_18`) is `6.18.39` on
+    nixos-unstable and `6.18.40` on nixos-26.05 — both carry the
+    backport — fixed.
+  - `linuxPackages_latest` (`linux_7_1`) is `7.1.4` on nixos-unstable
+    and `7.1.5` on nixos-26.05.
 - **Rocky / RHEL family** (via the Red Hat security data API,
   errata.almalinux.org, and Rocky BaseOS repodata):
   - EL10 / EL9 standard `kernel` — RHSA-2026:36956 (RHEL 10, fixed NVR
