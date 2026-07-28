@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape tracking"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-27
+lastmod: 2026-07-28
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -114,17 +114,17 @@ vulnerable).
 | Proxmox VE | 9 (7.0 default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 9 (6.17 old) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
 | Proxmox VE | 9 (6.14 old) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
-| Proxmox VE | 8 (6.8 default) | 6.8.12-37-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 8 (6.8 default) | 6.8.12-38-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | NixOS | 26.05 | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | Rocky Linux | 10 | 6.12.0-211.39.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
-| Rocky Linux | 9 | 5.14.0-687.29.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
+| Rocky Linux | 9 | 5.14.0-687.30.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
 | Rocky Linux | 8 | 4.18.0-553.147.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
-| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-221.367 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
-| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.190 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
-| Amazon Linux | 2023 (kernel6.18) | 6.18.38-73.137 | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1969 |
+| Amazon Linux | 2023 (kernel 6.1) | 6.1.176-223.369 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
+| Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.192 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
+| Amazon Linux | 2023 (kernel6.18) | 6.18.38-76.139 | 6.18.38-73.137 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1969 |
 {.distros}
 
 ### Linux kernel
@@ -341,7 +341,7 @@ log records the provenance — the advisory, repository index, or git
 reference that established each fact — so any row can be audited or
 reproduced. Most readers never need it.
 
-*Last verified 2026-07-27.*
+*Last verified 2026-07-28.*
 
 {{< details summary="Full verification log" >}}
 #### Upstream
