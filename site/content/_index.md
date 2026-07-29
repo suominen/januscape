@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-07-28
+lastmod: 2026-07-29
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -109,13 +109,13 @@ vulnerable).
 | Debian | sid (unstable) | 7.1.5-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
-| Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed |
+| Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — DLA-4688-1 |
 | Debian | 11 (bullseye, LTS) | 5.10.259-1 | — | — | :x: Vulnerable — no backport in 5.10.x |
-| Debian | 11 (linux-6.1 opt-in) | 6.1.177-1~deb11u1 | 6.1.177-1~deb11u1 | 2026-07-25 | :white_check_mark: Fixed |
-| Proxmox VE | 9 (default) | 7.0.14-6-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
-| Proxmox VE | 9 (6.17 old) | 6.17.13-19-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
+| Debian | 11 (linux-6.1 opt-in) | 6.1.177-1~deb11u1 | 6.1.177-1~deb11u1 | 2026-07-25 | :white_check_mark: Fixed — DLA-4700-1 |
+| Proxmox VE | 9 (default) | 7.0.14-8-pve | 7.0.14-4-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 9 (6.17 old) | 6.17.13-21-pve | 6.17.13-15-pve | 2026-07-11 | :white_check_mark: Fixed — PSA-2026-00027-1 |
 | Proxmox VE | 9 (6.14 old) | 6.14.11-9-pve | — | — | :x: Vulnerable — no cherry-pick |
-| Proxmox VE | 8 (default) | 6.8.12-38-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
+| Proxmox VE | 8 (default) | 6.8.12-39-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
@@ -343,7 +343,7 @@ log records the provenance — the advisory, repository index, or git
 reference that established each fact — so any row can be audited or
 reproduced. Most readers never need it.
 
-*Last verified 2026-07-28.*
+*Last verified 2026-07-29.*
 
 {{< details summary="Full verification log" >}}
 #### Upstream
@@ -381,15 +381,15 @@ reproduced. Most readers never need it.
     fixed.
   - stable/trixie — `6.12.95-1` (DSA-6381-1, via `trixie-security`,
     first seen 2026-07-05) — fixed.
-  - oldstable/bookworm — `6.1.177-1` (via `bookworm-security`, first
-    seen in snapshot 2026-07-17; security tracker resolved) — fixed.
+  - oldstable/bookworm — `6.1.177-1` (DLA-4688-1, via `bookworm-security`,
+    first seen in snapshot 2026-07-17) — fixed.
   - LTS/bullseye default kernel — `5.10.259-1` in `bullseye-security`
     (via Debian security tracker JSON) carries no Januscape
     cherry-pick; upstream 5.10.y has not received the backport —
     vulnerable.
   - LTS/bullseye opt-in `linux-6.1` — updated to
-    `6.1.177-1~deb11u1` in `bullseye-security` (first seen snapshot
-    2026-07-25); 6.1.177 is the first upstream fixed release — fixed.
+    `6.1.177-1~deb11u1` in `bullseye-security` (DLA-4700-1, first seen
+    snapshot 2026-07-25); 6.1.177 is the first upstream fixed release — fixed.
 - **Proxmox VE** (fixed kernels confirmed in the `pve-no-subscription`
   repo via the Proxmox forum thread and Packages.gz; opt-in series via
   the pve-kernel changelogs):
