@@ -1,5 +1,5 @@
 ---
-title: "Januscape — KVM guest-to-host escape tracking"
+title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
