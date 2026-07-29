@@ -646,7 +646,14 @@ NVR once a fix ships):
 curl -fsSL 'https://access.redhat.com/hydra/rest/securitydata/cve/CVE-2026-53359.json'
 ```
 
-(or WebFetch `https://access.redhat.com/security/cve/CVE-2026-53359`.)  While
+(If hydra ever 404s — it can lag a new record by days — fall back to
+the CSAF/VEX record Red Hat publishes first,
+`https://security.access.redhat.com/data/csaf/v2/vex/2026/cve-2026-53359.json`:
+`product_status` carries the per-product verdicts, `flags` the
+justification, and a shipped RHSA appears as a `vendor_fix`
+remediation.  Never WebFetch the access.redhat.com CVE page — it is
+JS-rendered and returns only the navigation shell headlessly, a false
+"no record".)  While
 a product's kernel `fix_state` is **Affected** with an empty
 `affected_release`, no EL fix has shipped → its Rocky row stays `:x:`.  When
 `affected_release` gains a RHEL `kernel` entry, that NVR is the target; Rocky
