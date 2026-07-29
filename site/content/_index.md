@@ -27,6 +27,7 @@ cover:
 | Public PoC | [V4bel/Januscape][poc] (demonstrates the host-crash path) |
 | KEV / EPSS / CVSS | CVSS 7.8 Important (Red Hat CNA), 8.8 HIGH (NVD CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H); EPSS 0.91 % (56th pct); not in KEV |
 | Related | [ITScape (CVE-2026-46316)][itscape] — the arm64 sibling by the same researcher (KVM/arm64 vGIC-ITS escape). Januscape is x86-only; ITScape is arm64-only |
+{.summary}
 
 ## How the exploitation chain works
 
