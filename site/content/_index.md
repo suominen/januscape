@@ -100,12 +100,12 @@ vulnerable).
 | Linux kernel | mainline | 7.2-rc5 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
 | Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
 | Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
-| Linux kernel | 6.18.x | 6.18.40 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.12.x | 6.12.99 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.6.x | 6.6.146 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.1.x | 6.1.179 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 5.15.x | 5.15.212 | — | — | :x: Vulnerable — LTS, no backport yet |
-| Linux kernel | 5.10.x | 5.10.261 | — | — | :x: Vulnerable — LTS, no backport yet |
+| Linux kernel | 6.18.x | 6.18.41 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.12.x | 6.12.100 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.6.x | 6.6.147 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.1.x | 6.1.180 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, no backport yet |
+| Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, no backport yet |
 | Debian | sid (unstable) | 7.1.5-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.96-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
@@ -121,7 +121,7 @@ vulnerable).
 | NixOS | Unstable | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | NixOS | 26.05 | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | Rocky Linux | 10 | 6.12.0-211.40.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
-| Rocky Linux | 9 | 5.14.0-687.30.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
+| Rocky Linux | 9 | 5.14.0-687.31.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
 | Rocky Linux | 8 | 4.18.0-553.148.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
 | Amazon Linux | 2023 (default) | 6.1.176-223.369 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.192 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |

@@ -17,3 +17,8 @@ site/resources/
 # Editor / OS
 *~
 .DS_Store
+
+# Scratch files the headless agent's restricted permission set (no rm/mv)
+# could not remove after an accidental curl -o write; see commit message.
+/.dt.json.tmp
+/scratch_probe.txt
