@@ -1,39 +1,27 @@
 # Januscape — Linux KVM/x86 guest-to-host escape tracking site
 
-Patch-status tracker for **Januscape** (**CVE-2026-53359**), a KVM/x86
-guest-to-host escape in the Linux kernel.  A shadow-MMU role confusion —
-`kvm_mmu_get_child_sp()` reuses a child shadow page without comparing its
-role — leaves a stale rmap entry after a memslot is deleted, and a later
-walk dereferences an `sptep` in the freed shadow page: a page
-use-after-free the PoC turns into host code execution.  A hostile guest can
-escape to host root; where `/dev/kvm` is world-accessible (the EL8+
-default) an unprivileged local user can trigger it too.  Demonstrated on
-both Intel and AMD.  Discovered by Hyunwoo Kim (`@v4bel`) and
-[disclosed on 2026-07-06](https://thehackernews.com/2026/07/16-year-old-linux-kvm-flaw-lets-guest.html).
-Public PoC: <https://github.com/V4bel/Januscape>.
+Source for the **Januscape** patch-status tracker: a single-page site
+recording which distributions have shipped a fix for the KVM/x86
+guest-to-host escape in the Linux kernel.
 
-The bug was introduced by `2032a93d66fa` in **v2.6.36** (2010) and fixed in
-v7.2-rc1 by
-[`81ccda30b4e8`](https://github.com/torvalds/linux/commit/81ccda30b4e83d8f5cc4fd50503c44e3a33abfeb)
-(*KVM: x86: Fix shadow paging use-after-free due to unexpected role*).
-Because it dates to 2.6.36, the practical exploitable window is **every
-kernel from 2.6.36 through 7.1**; distro adoption of the backport is tracked
-below.
+## Where the facts live
 
-**CVE-2026-53359** is assigned; the kernel CNA backported the fix to
-6.1.177, 6.6.144, 6.12.95, 6.18.38, and 7.1.3, but each distribution has to
-pick it up.  Januscape is **x86-only** (Intel and AMD); its **arm64
-sibling** by the same researcher is **ITScape (CVE-2026-46316)**, a
-KVM/arm64 vGIC-ITS escape tracked at <https://kimmo.cloud/itscape/>.
+Everything about the bug — CVE IDs, affected and fixed versions, upstream
+fix commits, discovery and disclosure credit, and current per-distribution
+patch status — belongs to the tracker page, not to this README:
 
-The rendered site is published at **<https://kimmo.cloud/januscape/>**.
+- **Rendered:** <https://kimmo.cloud/januscape/>
+- **Source:** [`site/content/_index.md`](site/content/_index.md)
+
+Edit that file; everything else in this repo is build infrastructure.
+
+None of it is restated here on purpose.  The tracker page is revised as
+CVEs are assigned and distributions ship fixes — for the actively updated
+trackers, twice daily by the auto-update agent — so any copy kept in this
+README would silently rot.  Resist re-adding a summary.
+
 Deployment plan and current setup state live in
 [`WEBSITE.md`](WEBSITE.md).
-
-## Source of truth
-
-The tracker is a single Hugo page: [`site/content/_index.md`](site/content/_index.md).
-Edit that file; everything else is build infrastructure.
 
 ## Local development
 
