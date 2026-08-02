@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-08-01
+lastmod: 2026-08-02
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -118,10 +118,10 @@ vulnerable).
 | Proxmox VE | 8 (default) | 6.8.12-39-pve | 6.8.12-33-pve | 2026-07-08 | :white_check_mark: Fixed |
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
-| NixOS | Unstable | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | Unstable | 6.18.41 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | NixOS | 26.05 | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| Rocky Linux | 10 | 6.12.0-211.40.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
-| Rocky Linux | 9 | 5.14.0-687.31.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
+| Rocky Linux | 10 | 6.12.0-211.42.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
+| Rocky Linux | 9 | 5.14.0-687.33.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
 | Rocky Linux | 8 | 4.18.0-553.148.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
 | Amazon Linux | 2023 (default) | 6.1.176-223.369 | 6.1.176-221.367 | 2026-07-24 | :white_check_mark: Fixed — ALAS2023-2026-2001 |
 | Amazon Linux | 2023 (kernel6.12) | 6.12.94-123.192 | 6.12.94-123.190 | 2026-07-20 | :white_check_mark: Fixed — ALAS2023-2026-1970 |
@@ -211,8 +211,10 @@ AlmaLinux → Rocky:
   `6.12.0-55.88.1.el10_0`), **RHSA-2026:38902** (RHEL 9.6 EUS,
   `5.14.0-570.127.1.el9_6`), **RHSA-2026:37729** (RHEL 9.4 SAP US,
   `5.14.0-427.137.1.el9_4`), **RHSA-2026:40082** (RHEL 9.2 SAP US,
-  `5.14.0-284.181.1.el9_2`), and **RHSA-2026:41229** (RHEL 8.8
-  TUS / SAP US, `4.18.0-477.154.1.el8_8`, 2026-07-17).
+  `5.14.0-284.181.1.el9_2`), **RHSA-2026:41229** (RHEL 8.8
+  TUS / SAP US, `4.18.0-477.154.1.el8_8`, 2026-07-17), and
+  **RHSA-2026:49033** (RHEL 8.6 AUS / EUS Long-Life,
+  `4.18.0-372.204.1.el8_6`, 2026-07-31).
 
 Oracle Linux 10 and CloudLinux OS 10 are expected to track the RHEL
 fixes.
@@ -413,7 +415,7 @@ reproduced. Most readers never need it.
     and every such series is EOL on kernel.org — the basis of the
     *old* labels and the "unlikely ever to flip" caveat.
 - **NixOS** (via the local nixpkgs clone):
-  - The default `linuxPackages` (`linux_6_18`) is `6.18.40` on
+  - The default `linuxPackages` (`linux_6_18`) is `6.18.41` on
     nixos-unstable and `6.18.40` on nixos-26.05 — both carry the
     backport — fixed.
   - `linuxPackages_latest` (`linux_7_1`) is `7.1.5` on nixos-unstable
@@ -438,8 +440,10 @@ reproduced. Most readers never need it.
     `6.12.0-55.88.1.el10_0`), RHSA-2026:38902 (RHEL 9.6 EUS,
     `5.14.0-570.127.1.el9_6`), RHSA-2026:37729 (RHEL 9.4 EUS,
     `5.14.0-427.137.1.el9_4`), RHSA-2026:40082 (RHEL 9.2 E4S,
-    `5.14.0-284.181.1.el9_2`), and RHSA-2026:41229 (RHEL 8.8 TUS and
-    SAP Solutions, `4.18.0-477.154.1.el8_8`, 2026-07-17).
+    `5.14.0-284.181.1.el9_2`), RHSA-2026:41229 (RHEL 8.8 TUS and
+    SAP Solutions, `4.18.0-477.154.1.el8_8`, 2026-07-17), and
+    RHSA-2026:49033 (RHEL 8.6 AUS and EUS Long-Life Add-On,
+    `4.18.0-372.204.1.el8_6`, 2026-07-31).
 - **Amazon Linux** (via repodata `updateinfo.xml.gz`):
   - AL2023 default `kernel` (6.1) — ALAS2023-2026-2001 (issued
     2026-07-24) fixes CVE-2026-53359 via cherry-pick in
