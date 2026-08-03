@@ -107,11 +107,13 @@ fi
 # `default` mode under -p with no TTY refuses anything outside the
 # allowlist without prompting.
 #
-# mktemp is allowlisted only as the bare `mktemp` and `mktemp -d`
-# forms (exact match, no template argument), so agent scratch space
-# always lands under /tmp -- never at a path of its choosing, and
-# never inside the worktree. /tmp leftovers are harmless (the OS ages
-# them out), so no rm is granted.
+# Scratch files live in the worktree: Claude Code confines Bash file
+# reads to the session working directory, so /tmp scratch can be
+# written but never read back. rm is allowlisted so the agent can
+# remove its own scratch before committing; Claude Code confines rm
+# the same way, so the grant cannot touch the shared clones or
+# anything else outside the worktree. The git clean above sweeps
+# any scratch files a run forgets.
 #
 # The git rules are enumerated per subcommand rather than `git:*` on
 # purpose. Read-only commands are auto-classified as safe and run
@@ -122,7 +124,7 @@ fi
 exec claude -p \
   --model claude-sonnet-5 \
   --permission-mode default \
-  --settings '{"permissions":{"allow":["Read","Edit","WebFetch","Bash(date:*)","Bash(mktemp)","Bash(mktemp -d)","Bash(curl:*)","Bash(zcat:*)","Bash(gunzip:*)","Bash(git add:*)","Bash(git commit:*)","Bash(git diff:*)","Bash(git log:*)","Bash(git show:*)","Bash(git status:*)","Bash(git describe:*)"]}}' \
+  --settings '{"permissions":{"allow":["Read","Edit","WebFetch","Bash(date:*)","Bash(rm:*)","Bash(curl:*)","Bash(zcat:*)","Bash(gunzip:*)","Bash(git add:*)","Bash(git commit:*)","Bash(git diff:*)","Bash(git log:*)","Bash(git show:*)","Bash(git status:*)","Bash(git describe:*)"]}}' \
   --output-format text \
   --no-session-persistence \
   --max-budget-usd 5 \
