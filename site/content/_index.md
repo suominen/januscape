@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-08-03
+lastmod: 2026-08-04
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -98,11 +98,11 @@ vulnerable).
 | Distribution | Release | Current kernel | First fixed | Fixed since | Status |
 |---|---|---|---|---|---|
 | Linux kernel | mainline | 7.2-rc6 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
-| Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
+| Linux kernel | 7.1.x | 7.1.6 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
 | Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
-| Linux kernel | 6.18.x | 6.18.41 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.12.x | 6.12.100 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 6.6.x | 6.6.147 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.18.x | 6.18.42 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.12.x | 6.12.101 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
+| Linux kernel | 6.6.x | 6.6.148 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.1.x | 6.1.180 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, no backport yet |
 | Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, no backport yet |
