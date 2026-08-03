@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-08-02
+lastmod: 2026-08-03
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -97,7 +97,7 @@ vulnerable).
 
 | Distribution | Release | Current kernel | First fixed | Fixed since | Status |
 |---|---|---|---|---|---|
-| Linux kernel | mainline | 7.2-rc5 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
+| Linux kernel | mainline | 7.2-rc6 | 7.2-rc1 | 2026-06-28 | :white_check_mark: Fixed — carries `81ccda30b4e8` |
 | Linux kernel | 7.1.x | 7.1.5 | 7.1.3 | 2026-07-04 | :white_check_mark: Fixed |
 | Linux kernel | 7.0.x | 7.0.14 | — | — | :x: Vulnerable — EOL without the fix |
 | Linux kernel | 6.18.x | 6.18.41 | 6.18.38 | 2026-07-04 | :white_check_mark: Fixed — LTS |
@@ -119,7 +119,7 @@ vulnerable).
 | Proxmox VE | 8 (6.14 opt-in) | 6.14.11-9-bpo12-pve | — | — | :x: Vulnerable — no cherry-pick |
 | Proxmox VE | 8 (6.11 old) | 6.11.11-2-pve | — | — | :x: Vulnerable — no cherry-pick |
 | NixOS | Unstable | 6.18.41 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
-| NixOS | 26.05 | 6.18.40 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
+| NixOS | 26.05 | 6.18.41 | 6.18.38 | 2026-07-08 | :white_check_mark: Fixed |
 | Rocky Linux | 10 | 6.12.0-211.42.1.el10_2 | 6.12.0-211.32.1.el10_2 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36956 |
 | Rocky Linux | 9 | 5.14.0-687.33.1.el9_8 | 5.14.0-687.24.1.el9_8 | 2026-07-13 | :white_check_mark: Fixed — RLSA rebuild of RHSA-2026:36957 |
 | Rocky Linux | 8 | 4.18.0-553.148.1.el8_10 | 4.18.0-553.144.1.el8_10 | 2026-07-15 | :white_check_mark: Fixed — RLSA-2026:39179 |
@@ -416,7 +416,7 @@ reproduced. Most readers never need it.
     *old* labels and the "unlikely ever to flip" caveat.
 - **NixOS** (via the local nixpkgs clone):
   - The default `linuxPackages` (`linux_6_18`) is `6.18.41` on
-    nixos-unstable and `6.18.40` on nixos-26.05 — both carry the
+    nixos-unstable and `6.18.41` on nixos-26.05 — both carry the
     backport — fixed.
   - `linuxPackages_latest` (`linux_7_1`) is `7.1.5` on nixos-unstable
     and `7.1.5` on nixos-26.05.
