@@ -408,8 +408,9 @@ systemctl --user enable --now januscape-tracker-update.timer
 ```
 
 The timer fires at `05,17:50` — staggered from the sibling trackers
-(ipv6_frag_escape `:05`, cifswitch `:20`, pintheft `:35`, itscape `06,18:05`) so the shared
-kernel clones are not fetched simultaneously.  Verify the live set with
+(ipv6_frag_escape `:05`, cifswitch `:20`, pintheft `:35`, itscape
+`06,18:05`) so the shared kernel clones are not fetched
+simultaneously.  Verify the live set with
 `systemctl --user list-timers | grep tracker` — this in-doc list has gone
 stale before.
 
@@ -516,9 +517,10 @@ git -C ~/src/linux/vulns show origin/master:cve/published/2026/CVE-2026-53359.dy
 
 The `.dyad` gives the authoritative per-branch `<introduced>:<fixed>`
 versions used in the `Linux kernel` rows of the *Patch status* table;
-the `.json` carries the CNA description.  A distro or MITRE CVSS could appear in NVD later —
-watch the disclosure sources for a KEV/EPSS/CVSS update to add to the
-Summary.  The repo/site slug stays `januscape` (see `WEBSITE.md`).
+the `.json` carries the CNA description.  A distro or MITRE CVSS
+could appear in NVD later — watch the disclosure sources for a
+KEV/EPSS/CVSS update to add to the Summary.  The repo/site slug stays
+`januscape` (see `WEBSITE.md`).
 
 ## `/dev/kvm` exposure and nested virtualization — the reach discriminators
 
