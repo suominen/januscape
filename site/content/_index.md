@@ -10,6 +10,12 @@ cover:
   hiddenInSingle: true
 ---
 
+*This tracker is no longer updated.  Every tracked distribution has
+shipped a kernel carrying the `81ccda30b4e8` backport, or runs a kernel
+line that is not expected to receive it: 5.15.y and 5.10.y (and with
+them Debian bullseye) never picked the fix up, and the end-of-life
+7.0.y and the superseded Proxmox series ended without it.*
+
 ## Summary
 
 | Field | Detail |
