@@ -104,8 +104,8 @@ vulnerable).
 | Linux kernel | 6.12.x | 6.12.101 | 6.12.95 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.6.x | 6.6.148 | 6.6.144 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 6.1.x | 6.1.180 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
-| Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, no backport yet |
-| Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, no backport yet |
+| Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, backport unlikely |
+| Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, backport unlikely |
 | Debian | sid (unstable) | 7.1.6-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.100-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
@@ -133,9 +133,16 @@ vulnerable).
 The fix reached Linus as **v7.2-rc1** and the kernel CNA
 (CVE-2026-53359) backported it across the maintained stable lines on
 2026-07-04. 7.0.y reached end of life at 7.0.14 without the backport.
-The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the bug — the fix
-uses `sp->gfns[]` on those kernels — but have **not** received a
-backport as of this writing.
+The pre-6.1 longterm lines (5.15.y, 5.10.y) carry the bug and are
+unlikely to ever receive a backport: the fix was not tagged for stable
+(the 6.1+ backports came via the stable team's `Fixes:`-based
+selection), and it does not apply to the pre-6.0 MMU code —
+`kvm_mmu_get_child_sp()` and `sp->shadowed_translation[]` do not exist
+there, so a fix would need a manual rewrite against
+`kvm_mmu_get_page()` and `sp->gfns[]`. The prior partial fix
+`0cb2af2ea66a` never reached either line for the same reason, and both
+have shipped several point releases since 2026-07-04 without picking
+the fix up, while approaching end of life in late 2026.
 
 When verifying a tree directly, the fixed function is
 `kvm_mmu_get_child_sp()` in `arch/x86/kvm/mmu/mmu.c`; the fix adds a
@@ -148,7 +155,8 @@ them); the security tracker's CVE-2026-53359 record drove these
 assessments. **bullseye** (LTS) default `linux` kernel (`5.10.x` series) has not
 received the fix — upstream 5.10.y carries no backport and Debian has
 not issued an independent cherry-pick; `5.10.259-1` in
-`bullseye-security` remains vulnerable. The opt-in `linux-6.1` package
+`bullseye-security` remains vulnerable, and with a 5.10.y backport
+unlikely (see *Linux kernel* above) no fix is expected. The opt-in `linux-6.1` package
 (bookworm's 6.1 kernel rebuilt for bullseye) was updated to
 `6.1.177-1~deb11u1` in `bullseye-security` (2026-07-25), carrying the
 fix via the upstream 6.1.177 release. Debian keeps `/dev/kvm` owned
@@ -335,7 +343,8 @@ until patched.
   both vendors; there is no "AMD is safe" caveat.
 - **Backports available (CVE-2026-53359):** the fix has landed in 7.1.3,
   6.18.38, 6.12.95, 6.6.144, and 6.1.177, but distro kernels that have not
-  yet adopted one of those releases remain vulnerable. Check the
+  yet adopted one of those releases remain vulnerable, and 5.15.y /
+  5.10.y are not expected to receive the fix at all. Check the
   distribution row for your kernel.
 
 ## Verification log
@@ -362,8 +371,18 @@ reproduced. Most readers never need it.
   - Landed in 7.1.3 (`1ae7d5a6db6c`), 6.18.38 (`5e470998a23e`), 6.12.95
     (`2ad3afa40ac6`), 6.6.144 (`9291654d69e0`), and 6.1.177
     (`b1337aae5e19`).
-  - 7.0.y is EOL at 7.0.14 without the fix; 5.15.y and 5.10.y are
-    in-window and not yet backported.
+  - 7.0.y is EOL at 7.0.14 without the fix.
+  - `81ccda30b4e8` carries no `Cc: stable` tag — the 6.1+ backports are
+    the stable team's `Fixes:`-based picks.
+  - 5.15.y and 5.10.y lack the patched code entirely
+    (`kvm_mmu_get_child_sp()` and `sp->shadowed_translation[]` are
+    absent, per `git grep` against `~/src/linux/stable`), so the fix
+    cannot be cherry-picked; a backport would be a manual rewrite, and
+    none has appeared.
+  - The prior partial fix `0cb2af2ea66a` was likewise never backported
+    to 5.15.y or 5.10.y.
+  - Both lines have released past the 2026-07-04 backports (5.15.213,
+    5.10.262) without the fix — backport unlikely.
 
 #### Scoring
 
