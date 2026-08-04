@@ -106,7 +106,7 @@ vulnerable).
 | Linux kernel | 6.1.x | 6.1.180 | 6.1.177 | 2026-07-04 | :white_check_mark: Fixed — LTS |
 | Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, no backport yet |
 | Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, no backport yet |
-| Debian | sid (unstable) | 7.1.5-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
+| Debian | sid (unstable) | 7.1.6-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
 | Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.100-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
 | Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — DLA-4688-1 |
