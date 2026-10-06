@@ -3,7 +3,7 @@ title: "Januscape — KVM guest-to-host escape"
 description: "Linux kernel KVM/x86 shadow-MMU use-after-free (CVE-2026-53359, Januscape) — guest-to-host escape — distro patch status tracker"
 layout: "single"
 date: 2026-07-08
-lastmod: 2026-08-04
+lastmod: 2026-10-06
 cover:
   image: "januscape-tracker.png"
   alt: "Januscape — Linux KVM/x86 shadow-MMU guest-to-host escape tracker"
@@ -113,7 +113,7 @@ vulnerable).
 | Linux kernel | 5.15.x | 5.15.213 | — | — | :x: Vulnerable — LTS, backport unlikely |
 | Linux kernel | 5.10.x | 5.10.262 | — | — | :x: Vulnerable — LTS, backport unlikely |
 | Debian | sid (unstable) | 7.1.6-1 | 7.1.3-1 | 2026-07-05 | :white_check_mark: Fixed |
-| Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-04 | :white_check_mark: Fixed |
+| Debian | forky (testing) | 7.1.3-1 | 7.1.3-1 | 2026-07-11 | :white_check_mark: Fixed |
 | Debian | 13 (trixie) | 6.12.100-1 | 6.12.95-1 | 2026-07-05 | :white_check_mark: Fixed — DSA-6381-1 |
 | Debian | 12 (bookworm) | 6.1.177-1 | 6.1.177-1 | 2026-07-17 | :white_check_mark: Fixed — DLA-4688-1 |
 | Debian | 11 (bullseye, LTS) | 5.10.259-1 | — | — | :x: Vulnerable — no backport in 5.10.x |
@@ -402,8 +402,8 @@ reproduced. Most readers never need it.
 
 - **Debian** (via Debian security tracker JSON + snapshot.debian.org):
   - unstable/sid — `7.1.3-1` carries the backport — fixed.
-  - testing/forky — `7.1.3-1` (first seen in snapshot 2026-07-04) —
-    fixed.
+  - testing/forky — `7.1.3-1` (migrated to testing 2026-07-11, per
+    snapshot.debian.org's `dists/testing` index) — fixed.
   - stable/trixie — `6.12.95-1` (DSA-6381-1, via `trixie-security`,
     first seen 2026-07-05) — fixed.
   - oldstable/bookworm — `6.1.177-1` (DLA-4688-1, via `bookworm-security`,
